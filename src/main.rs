@@ -11,9 +11,8 @@ fn disassemble(byte_string: &String) -> Vec<(usize, u8)> {
     }
 
     (0..trimmed_byte_string.len()).step_by(2).map(|byte| {
-        let curr_pc = pc;
         pc += 1;
-        (curr_pc, u8::from_str_radix(&trimmed_byte_string[byte..byte + 2], 16).unwrap())
+        (pc - 1, u8::from_str_radix(&trimmed_byte_string[byte..byte + 2], 16).unwrap())
     }).collect()
 }
 
