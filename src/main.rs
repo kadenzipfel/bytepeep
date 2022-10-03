@@ -12,5 +12,5 @@ fn main() {
     let bytecode = &args[1];
     println!("Bytecode: {}", bytecode);
 
-    let bytes = disassemble(bytecode);
+    let bytes = disassemble(bytecode, true);
 }

@@ -50,7 +50,7 @@ fn print_output(bytecode: &Bytecode) {
     }
 }
 
-pub fn disassemble(byte_string: &String) -> Bytecode {
+pub fn disassemble(byte_string: &String, print: bool) -> Bytecode {
     let mut pc: u32 = 0;
     let mut bytes_to_push: u8 = 0;
     let trimmed_byte_string: &str;
@@ -86,7 +86,10 @@ pub fn disassemble(byte_string: &String) -> Bytecode {
         }
     }).collect();
 
-    print_output(&bytecode);
+    if print {
+        print_output(&bytecode);
+    }
+
     bytecode
 }
 
