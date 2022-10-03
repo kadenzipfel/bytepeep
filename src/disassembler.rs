@@ -42,7 +42,7 @@ fn match_push_n(opcode: Opcode) -> u8 {
 fn print_output(bytecode: &Bytecode) {
     for byte in bytecode {
         if byte.kind == ByteKind::Opcode {
-            print!("\n{} {} ", byte.pc, String::from(byte.opcode.unwrap()));
+            print!("\n{} {} ", byte.pc, byte.opcode.unwrap().op_string());
         }
         if byte.kind == ByteKind::PushData {
             print!("{}", byte.pushdata.as_ref().unwrap());
