@@ -15,7 +15,7 @@ pub fn disassemble(byte_string: &String) -> Bytecode {
         pc += 1;
         ByteData {
             pc: pc - 1,
-            bytes: Opcode::new(&trimmed_byte_string[byte..byte + 2])
+            bytes: ByteType::Opcode(Opcode::new(&trimmed_byte_string[byte..byte + 2]))
         }
     }).collect()
 }
@@ -28,10 +28,10 @@ mod tests {
     fn test_disassemble() {
         let byte_string = String::from("0x60806054");
         let disassembled_bytes: Bytecode = vec![
-            ByteData { pc: 0, bytes: Opcode::Push1 }, 
-            ByteData { pc: 1, bytes: Opcode::Dup1 }, 
-            ByteData { pc: 2, bytes: Opcode::Push1 }, 
-            ByteData { pc: 3, bytes: Opcode::Sload }
+            ByteData { pc: 0, bytes: ByteType::Opcode(Opcode::Push1) }, 
+            ByteData { pc: 1, bytes: ByteType::Opcode(Opcode::Dup1) }, 
+            ByteData { pc: 2, bytes: ByteType::Opcode(Opcode::Push1) }, 
+            ByteData { pc: 3, bytes: ByteType::Opcode(Opcode::Sload) }
         ];
         assert_eq!(disassembled_bytes, disassemble(&byte_string));
     }
@@ -40,10 +40,10 @@ mod tests {
     fn test_disassemble_no_0x() {
         let byte_string = String::from("60806054");
         let disassembled_bytes: Bytecode = vec![
-            ByteData { pc: 0, bytes: Opcode::Push1 }, 
-            ByteData { pc: 1, bytes: Opcode::Dup1 }, 
-            ByteData { pc: 2, bytes: Opcode::Push1 }, 
-            ByteData { pc: 3, bytes: Opcode::Sload }
+            ByteData { pc: 0, bytes: ByteType::Opcode(Opcode::Push1) }, 
+            ByteData { pc: 1, bytes: ByteType::Opcode(Opcode::Dup1) }, 
+            ByteData { pc: 2, bytes: ByteType::Opcode(Opcode::Push1) }, 
+            ByteData { pc: 3, bytes: ByteType::Opcode(Opcode::Sload) }
         ];
         assert_eq!(disassembled_bytes, disassemble(&byte_string));
     }
