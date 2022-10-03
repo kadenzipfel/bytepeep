@@ -40,7 +40,7 @@ fn match_push_n(opcode: Opcode) -> u8 {
 }
 
 pub fn disassemble(byte_string: &String) -> Bytecode {
-    let mut pc: usize = 0;
+    let mut pc: u32 = 0;
     let mut bytes_to_push: u8 = 0;
     let trimmed_byte_string: &str;
 

@@ -10,7 +10,7 @@ pub enum ByteType {
 
 #[derive(Debug, PartialEq)]
 pub struct ByteData {
-    pub pc: usize,
+    pub pc: u32,
     pub bytes: ByteType
 }
 
