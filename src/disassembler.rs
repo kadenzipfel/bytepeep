@@ -39,6 +39,17 @@ fn match_push_n(opcode: Opcode) -> u8 {
     }
 }
 
+fn print_output(bytecode: &Bytecode) {
+    for byte in bytecode {
+        if byte.kind == ByteKind::Opcode {
+            print!("\n{} {} ", byte.pc, String::from(byte.opcode.unwrap()));
+        }
+        if byte.kind == ByteKind::PushData {
+            print!("{}", byte.pushdata.as_ref().unwrap());
+        }
+    }
+}
+
 pub fn disassemble(byte_string: &String) -> Bytecode {
     let mut pc: u32 = 0;
     let mut bytes_to_push: u8 = 0;
@@ -74,6 +85,8 @@ pub fn disassemble(byte_string: &String) -> Bytecode {
             kind: ByteKind::Opcode
         }
     }).collect();
+
+    print_output(&bytecode);
     bytecode
 }
 
