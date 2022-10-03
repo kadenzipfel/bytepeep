@@ -1,6 +1,12 @@
 use std::env;
 
-fn disassemble(byte_string: &String) -> Vec<(usize, u8)> {
+mod types;
+mod evm;
+
+use crate::types::*;
+use crate::evm::*;
+
+fn disassemble(byte_string: &String) -> Bytecode {
     let mut pc: usize = 0;
     let trimmed_byte_string: &str;
 
@@ -12,7 +18,10 @@ fn disassemble(byte_string: &String) -> Vec<(usize, u8)> {
 
     (0..trimmed_byte_string.len()).step_by(2).map(|byte| {
         pc += 1;
-        (pc - 1, u8::from_str_radix(&trimmed_byte_string[byte..byte + 2], 16).unwrap())
+        ByteData {
+            pc: pc - 1,
+            bytes: Opcode::new(&trimmed_byte_string[byte..byte + 2])
+        }
     }).collect()
 }
 
@@ -32,12 +41,24 @@ mod tests {
     #[test]
     fn test_disassemble() {
         let byte_string = String::from("0x60806054");
-        assert_eq!(vec![(0, 96), (1, 128), (2, 96), (3, 84)], disassemble(&byte_string));
+        let disassembled_bytes: Bytecode = vec![
+            ByteData { pc: 0, bytes: Opcode::Push1 }, 
+            ByteData { pc: 1, bytes: Opcode::Dup1 }, 
+            ByteData { pc: 2, bytes: Opcode::Push1 }, 
+            ByteData { pc: 3, bytes: Opcode::Sload }
+        ];
+        assert_eq!(disassembled_bytes, disassemble(&byte_string));
     }
 
     #[test]
     fn test_disassemble_no_0x() {
         let byte_string = String::from("60806054");
-        assert_eq!(vec![(0, 96), (1, 128), (2, 96), (3, 84)], disassemble(&byte_string));
+        let disassembled_bytes: Bytecode = vec![
+            ByteData { pc: 0, bytes: Opcode::Push1 }, 
+            ByteData { pc: 1, bytes: Opcode::Dup1 }, 
+            ByteData { pc: 2, bytes: Opcode::Push1 }, 
+            ByteData { pc: 3, bytes: Opcode::Sload }
+        ];
+        assert_eq!(disassembled_bytes, disassemble(&byte_string));
     }
 }

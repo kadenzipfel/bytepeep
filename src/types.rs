@@ -1,16 +1,9 @@
-pub enum ByteKind {
-    Opcode,
-    PushData,
-    InvalidOpcode
-}
+use crate::evm::Opcode;
 
-pub struct ByteType {
-    kind: ByteKind
-}
-
+#[derive(Debug, PartialEq)]
 pub struct ByteData {
-    pc: usize,
-    bytes: ByteType
+    pub pc: usize,
+    pub bytes: Opcode
 }
 
 pub type Bytecode = Vec<ByteData>;
