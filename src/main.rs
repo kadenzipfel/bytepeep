@@ -17,6 +17,7 @@ fn main() {
 
     let bytes: Bytecode = disassemble(bytecode, true);
     let optimized_bytes: Bytecode = optimize(bytes);
+    println!("here");
     let optimized_bytecode = assemble(&optimized_bytes);
 
     println!("Optimized bytecode: {}", optimized_bytecode);
