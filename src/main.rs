@@ -3,6 +3,8 @@ use std::env;
 mod disassembler;
 mod types;
 mod evm;
+mod peephole;
+mod rules;
 
 use crate::disassembler::*;
 

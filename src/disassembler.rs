@@ -1,7 +1,7 @@
 use crate::types::*;
 use crate::evm::*;
 
-fn match_push_n(opcode: Opcode) -> u8 {
+pub fn match_push_n(opcode: Opcode) -> u32 {
     match opcode {
         Opcode::Push1 => 1,
         Opcode::Push2 => 2,
@@ -52,7 +52,7 @@ fn print_output(bytecode: &Bytecode) {
 
 pub fn disassemble(byte_string: &String, print: bool) -> Bytecode {
     let mut pc: u32 = 0;
-    let mut bytes_to_push: u8 = 0;
+    let mut bytes_to_push: u32 = 0;
     let trimmed_byte_string: &str;
 
     if byte_string.starts_with(&String::from("0x")) {
