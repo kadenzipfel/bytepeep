@@ -106,7 +106,7 @@ mod tests {
             ByteData { pc: 2, opcode: Some(Opcode::Push1), pushdata: None, kind: ByteKind::Opcode }, 
             ByteData { pc: 3, opcode: None, pushdata: Some(String::from("54")), kind: ByteKind::PushData }
         ];
-        assert_eq!(disassembled_bytes, disassemble(&byte_string));
+        assert_eq!(disassembled_bytes, disassemble(&byte_string, false));
     }
 
     #[test]
@@ -118,6 +118,6 @@ mod tests {
             ByteData { pc: 2, opcode: Some(Opcode::Push1), pushdata: None, kind: ByteKind::Opcode }, 
             ByteData { pc: 3, opcode: None, pushdata: Some(String::from("54")), kind: ByteKind::PushData }
         ];
-        assert_eq!(disassembled_bytes, disassemble(&byte_string));
+        assert_eq!(disassembled_bytes, disassemble(&byte_string, false));
     }
 }
