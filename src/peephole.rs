@@ -2,14 +2,15 @@ use crate::types::*;
 use crate::disassembler::*;
 use crate::rules::*;
 
-pub fn optimize(bytecode: Bytecode) -> Result<Bytecode, &'static str> {
+pub fn optimize(bytecode: Bytecode) -> Bytecode {
     let mut i: usize = 0;
     let mut optimized_bytecode: Bytecode = vec![];
 
     while i < bytecode.len() {
         // Skip non-opcodes
         if bytecode[i].kind != ByteKind::Opcode {
-            optimized_bytecode.push(bytecode[i].clone())
+            optimized_bytecode.push(bytecode[i].clone());
+            continue;
         }
 
         let next_byte: usize = (match_push_n(bytecode[i].opcode.unwrap()) + i as u32 + 1) as usize;
@@ -35,5 +36,5 @@ pub fn optimize(bytecode: Bytecode) -> Result<Bytecode, &'static str> {
         i += increment;
     }
 
-    Ok(optimized_bytecode)
+    optimized_bytecode
 }

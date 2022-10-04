@@ -7,7 +7,7 @@ mod peephole;
 mod rules;
 mod assembler;
 
-use crate::disassembler::*;
+use crate::{disassembler::*, types::*, peephole::*, assembler::*};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -15,5 +15,9 @@ fn main() {
     let bytecode = &args[1];
     println!("Bytecode: {}", bytecode);
 
-    let bytes = disassemble(bytecode, true);
+    let bytes: Bytecode = disassemble(bytecode, true);
+    let optimized_bytes: Bytecode = optimize(bytes);
+    let optimized_bytecode = assemble(&optimized_bytes);
+
+    println!("Optimized bytecode: {}", optimized_bytecode);
 }
