@@ -5,6 +5,7 @@ mod types;
 mod evm;
 mod peephole;
 mod rules;
+mod assembler;
 
 use crate::disassembler::*;
 
