@@ -4,16 +4,16 @@ use crate::rules::*;
 
 pub fn optimize(bytecode: Bytecode) -> Result<Bytecode, &'static str> {
     let mut i: usize = 0;
-    let optimized_bytecode: Bytecode;
+    let mut optimized_bytecode: Bytecode = vec![];
 
     while i < bytecode.len() {
         // Skip non-opcodes
         if bytecode[i].kind != ByteKind::Opcode {
-            optimized_bytecode.push(bytecode[i])
+            optimized_bytecode.push(bytecode[i].clone())
         }
 
         let next_byte: usize = (match_push_n(bytecode[i].opcode.unwrap()) + i as u32 + 1) as usize;
-        let bytes: Bytecode = vec![bytecode[i], bytecode[next_byte]];
+        let bytes: Bytecode = vec![bytecode[i].clone(), bytecode[next_byte].clone()];
         
         let mut increment: usize = 3;
 
