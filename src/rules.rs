@@ -8,3 +8,20 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
     };
     new_bytecode
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_non_commutative_swaps() {
+        let peephole: Bytecode = vec![
+            ByteData { pc: 4, opcode: Some(Opcode::Swap1), pushdata: None, kind: ByteKind::Opcode }, 
+            ByteData { pc: 5, opcode: Some(Opcode::Add), pushdata: None, kind: ByteKind::PushData }
+        ];
+        let optimized_peephole: Bytecode = vec![
+            ByteData { pc: 5, opcode: Some(Opcode::Add), pushdata: None, kind: ByteKind::PushData }
+        ];
+        assert_eq!(optimized_peephole, check_rules(&peephole));
+    }
+}
