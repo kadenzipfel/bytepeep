@@ -13,6 +13,10 @@ pub fn optimize(bytecode: Bytecode) -> Result<Bytecode, &'static str> {
         }
 
         let next_byte: usize = (match_push_n(bytecode[i].opcode.unwrap()) + i as u32 + 1) as usize;
+        if next_byte > bytecode.len() {
+            break;
+        }
+
         let bytes: Bytecode = vec![bytecode[i].clone(), bytecode[next_byte].clone()];
         
         let mut increment: usize = 3;
