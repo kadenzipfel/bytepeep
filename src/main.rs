@@ -13,12 +13,13 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     
     let bytecode = &args[1];
-    println!("Bytecode: {}", bytecode);
+    println!("\nBytecode: {}", bytecode);
 
     let bytes: Bytecode = disassemble(bytecode, true);
     let optimized_bytes: Bytecode = optimize(bytes);
-    println!("here");
     let optimized_bytecode = assemble(&optimized_bytes);
 
-    println!("Optimized bytecode: {}", optimized_bytecode);
+    println!("\n\nOptimized bytecode: {}", optimized_bytecode);
+    disassemble(&optimized_bytecode, true);
+    println!("\n");
 }
