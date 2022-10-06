@@ -45,6 +45,23 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
             opcode: Some(Opcode::Xor),
             ..
         }] => peephole[1..].to_vec(),
+
+        // Operations involving an expression and itself
+        [ByteData {
+            opcode: Some(Opcode::Dup1),
+            ..
+        }, ByteData {
+            opcode: Some(Opcode::And),
+            ..
+        }] => [].to_vec(),
+        [ByteData {
+            opcode: Some(Opcode::Dup1),
+            ..
+        }, ByteData {
+            opcode: Some(Opcode::Or),
+            ..
+        }] => [].to_vec(),
+
         _ => peephole[..].to_vec(),
     };
     new_bytecode
@@ -192,6 +209,39 @@ mod tests {
             pushdata: None,
             kind: ByteKind::PushData,
         }];
+        assert_eq!(optimized_peephole, check_rules(&peephole));
+    }
+
+    #[test]
+    fn test_dup_expression_operations() {
+        // Dup1, And => []
+        let peephole = vec![ByteData {
+            pc: 4,
+            opcode: Some(Opcode::Dup1),
+            pushdata: None,
+            kind: ByteKind::Opcode
+        }, ByteData {
+            pc: 5,
+            opcode: Some(Opcode::And),
+            pushdata: None,
+            kind: ByteKind::Opcode
+        }];
+        let optimized_peephole: Vec<ByteData> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole));
+
+        // Dup1, Or => []
+        let peephole = vec![ByteData {
+            pc: 4,
+            opcode: Some(Opcode::Dup1),
+            pushdata: None,
+            kind: ByteKind::Opcode
+        }, ByteData {
+            pc: 5,
+            opcode: Some(Opcode::Or),
+            pushdata: None,
+            kind: ByteKind::Opcode
+        }];
+        let optimized_peephole: Vec<ByteData> = Vec::new();
         assert_eq!(optimized_peephole, check_rules(&peephole));
     }
 }
