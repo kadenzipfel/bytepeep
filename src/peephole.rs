@@ -65,6 +65,18 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
         };
         optimized_bytecode.push(byte_pc);
 
+        // If pushdata returned from rule check, append to bytecode
+        // TODO: Support more than 1 byte of pushdata
+        if peeped_bytes.len() > 1 && peeped_bytes[1].kind == ByteKind::PushData {
+            let push_byte = peeped_bytes[1].clone();
+            optimized_bytecode.push(ByteData {
+                pc: optimized_bytecode.len() as u32,
+                opcode: push_byte.opcode,
+                pushdata: push_byte.pushdata,
+                kind: push_byte.kind
+            })
+        }
+
         // Place any trailing pushdata back in the bytecode
         if push_data_size > 0 {
             for j in 0..push_data_size {
@@ -80,7 +92,7 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
         }
 
         // If both opcodes remain, go to next opcode
-        if peeped_bytes.len() == 2 {
+        if peeped_bytes.len() == 2 && peeped_bytes[1].kind == ByteKind::Opcode {
             increment += 1;
         } else {
             // If any opcodes removed, go to opcode after peephole
@@ -114,24 +126,36 @@ mod tests {
             },
             ByteData {
                 pc: 2,
+                opcode: Some(Opcode::Dup1),
+                pushdata: None,
+                kind: ByteKind::Opcode
+            },
+            ByteData {
+                pc: 3,
+                opcode: Some(Opcode::Xor),
+                pushdata: None,
+                kind: ByteKind::Opcode
+            },
+            ByteData {
+                pc: 4,
                 opcode: Some(Opcode::Push1),
                 pushdata: None,
                 kind: ByteKind::Opcode,
             },
             ByteData {
-                pc: 3,
+                pc: 5,
                 opcode: None,
                 pushdata: Some(String::from("54")),
                 kind: ByteKind::PushData,
             },
             ByteData {
-                pc: 4,
+                pc: 6,
                 opcode: Some(Opcode::Swap1),
                 pushdata: None,
                 kind: ByteKind::Opcode,
             },
             ByteData {
-                pc: 5,
+                pc: 7,
                 opcode: Some(Opcode::Add),
                 pushdata: None,
                 kind: ByteKind::Opcode,
@@ -154,16 +178,28 @@ mod tests {
                 pc: 2,
                 opcode: Some(Opcode::Push1),
                 pushdata: None,
-                kind: ByteKind::Opcode,
+                kind: ByteKind::Opcode
             },
             ByteData {
                 pc: 3,
+                opcode: None,
+                pushdata: Some(String::from("00")),
+                kind: ByteKind::PushData,
+            },
+            ByteData {
+                pc: 4,
+                opcode: Some(Opcode::Push1),
+                pushdata: None,
+                kind: ByteKind::Opcode,
+            },
+            ByteData {
+                pc: 5,
                 opcode: None,
                 pushdata: Some(String::from("54")),
                 kind: ByteKind::PushData,
             },
             ByteData {
-                pc: 4,
+                pc: 6,
                 opcode: Some(Opcode::Add),
                 pushdata: None,
                 kind: ByteKind::Opcode,

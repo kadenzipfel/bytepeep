@@ -78,7 +78,7 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
                 pc: peephole[1].pc,
                 opcode: None,
                 pushdata: Some(String::from("00")),
-                kind: ByteKind::Opcode
+                kind: ByteKind::PushData
             }
         ].to_vec(),
         [ByteData {
@@ -98,7 +98,7 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
                 pc: peephole[1].pc,
                 opcode: None,
                 pushdata: Some(String::from("00")),
-                kind: ByteKind::Opcode
+                kind: ByteKind::PushData
             }
         ].to_vec(),
         [ByteData {
@@ -118,7 +118,7 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
                 pc: peephole[1].pc,
                 opcode: None,
                 pushdata: Some(String::from("01")),
-                kind: ByteKind::Opcode
+                kind: ByteKind::PushData
             }
         ].to_vec(),
         [ByteData {
@@ -138,7 +138,7 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
                 pc: peephole[1].pc,
                 opcode: None,
                 pushdata: Some(String::from("00")),
-                kind: ByteKind::Opcode
+                kind: ByteKind::PushData
             }
         ].to_vec(),
         [ByteData {
@@ -158,7 +158,7 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
                 pc: peephole[1].pc,
                 opcode: None,
                 pushdata: Some(String::from("00")),
-                kind: ByteKind::Opcode
+                kind: ByteKind::PushData
             }
         ].to_vec(),
         [ByteData {
@@ -178,7 +178,7 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
                 pc: peephole[1].pc,
                 opcode: None,
                 pushdata: Some(String::from("00")),
-                kind: ByteKind::Opcode
+                kind: ByteKind::PushData
             }
         ].to_vec(),
         [ByteData {
@@ -198,7 +198,7 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
                 pc: peephole[1].pc,
                 opcode: None,
                 pushdata: Some(String::from("00")),
-                kind: ByteKind::Opcode
+                kind: ByteKind::PushData
             }
         ].to_vec(),
         [ByteData {
@@ -218,7 +218,7 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
                 pc: peephole[1].pc,
                 opcode: None,
                 pushdata: Some(String::from("00")),
-                kind: ByteKind::Opcode
+                kind: ByteKind::PushData
             }
         ].to_vec(),
 
@@ -425,7 +425,7 @@ mod tests {
             pc: 5,
             opcode: None,
             pushdata: Some(String::from("00")),
-            kind: ByteKind::Opcode
+            kind: ByteKind::PushData
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
 
@@ -450,7 +450,7 @@ mod tests {
             pc: 5,
             opcode: None,
             pushdata: Some(String::from("00")),
-            kind: ByteKind::Opcode
+            kind: ByteKind::PushData
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
 
@@ -475,7 +475,7 @@ mod tests {
             pc: 5,
             opcode: None,
             pushdata: Some(String::from("01")),
-            kind: ByteKind::Opcode
+            kind: ByteKind::PushData
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
 
@@ -500,7 +500,7 @@ mod tests {
             pc: 5,
             opcode: None,
             pushdata: Some(String::from("00")),
-            kind: ByteKind::Opcode
+            kind: ByteKind::PushData
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
 
@@ -525,7 +525,7 @@ mod tests {
             pc: 5,
             opcode: None,
             pushdata: Some(String::from("00")),
-            kind: ByteKind::Opcode
+            kind: ByteKind::PushData
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
 
@@ -550,7 +550,7 @@ mod tests {
             pc: 5,
             opcode: None,
             pushdata: Some(String::from("00")),
-            kind: ByteKind::Opcode
+            kind: ByteKind::PushData
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
 
@@ -575,7 +575,7 @@ mod tests {
             pc: 5,
             opcode: None,
             pushdata: Some(String::from("00")),
-            kind: ByteKind::Opcode
+            kind: ByteKind::PushData
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
 
@@ -600,7 +600,7 @@ mod tests {
             pc: 5,
             opcode: None,
             pushdata: Some(String::from("00")),
-            kind: ByteKind::Opcode
+            kind: ByteKind::PushData
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
     }
