@@ -1,6 +1,6 @@
 use crate::{evm::*, types::*};
 
-pub fn check_rules(peephole: &Bytecode, pushdata: Vec<Option<Bytecode>>) -> Bytecode {
+pub fn check_rules(peephole: &Bytecode) -> Bytecode {
     let new_bytecode: Bytecode = match peephole[..] {
         // Redundant swaps on commutative operations
         [ByteData {
