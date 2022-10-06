@@ -85,14 +85,14 @@ mod tests {
                 pc: 5,
                 opcode: Some(Opcode::Add),
                 pushdata: None,
-                kind: ByteKind::PushData,
+                kind: ByteKind::Opcode,
             },
         ];
         let optimized_peephole: Bytecode = vec![ByteData {
             pc: 5,
             opcode: Some(Opcode::Add),
             pushdata: None,
-            kind: ByteKind::PushData,
+            kind: ByteKind::Opcode,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
 
@@ -108,14 +108,14 @@ mod tests {
                 pc: 5,
                 opcode: Some(Opcode::Mul),
                 pushdata: None,
-                kind: ByteKind::PushData,
+                kind: ByteKind::Opcode,
             },
         ];
         let optimized_peephole: Bytecode = vec![ByteData {
             pc: 5,
             opcode: Some(Opcode::Mul),
             pushdata: None,
-            kind: ByteKind::PushData,
+            kind: ByteKind::Opcode,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
 
@@ -131,14 +131,14 @@ mod tests {
                 pc: 5,
                 opcode: Some(Opcode::Eq),
                 pushdata: None,
-                kind: ByteKind::PushData,
+                kind: ByteKind::Opcode,
             },
         ];
         let optimized_peephole: Bytecode = vec![ByteData {
             pc: 5,
             opcode: Some(Opcode::Eq),
             pushdata: None,
-            kind: ByteKind::PushData,
+            kind: ByteKind::Opcode,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
 
@@ -154,14 +154,14 @@ mod tests {
                 pc: 5,
                 opcode: Some(Opcode::And),
                 pushdata: None,
-                kind: ByteKind::PushData,
+                kind: ByteKind::Opcode,
             },
         ];
         let optimized_peephole: Bytecode = vec![ByteData {
             pc: 5,
             opcode: Some(Opcode::And),
             pushdata: None,
-            kind: ByteKind::PushData,
+            kind: ByteKind::Opcode,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
 
@@ -177,14 +177,14 @@ mod tests {
                 pc: 5,
                 opcode: Some(Opcode::Or),
                 pushdata: None,
-                kind: ByteKind::PushData,
+                kind: ByteKind::Opcode,
             },
         ];
         let optimized_peephole: Bytecode = vec![ByteData {
             pc: 5,
             opcode: Some(Opcode::Or),
             pushdata: None,
-            kind: ByteKind::PushData,
+            kind: ByteKind::Opcode,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
 
@@ -200,14 +200,14 @@ mod tests {
                 pc: 5,
                 opcode: Some(Opcode::Xor),
                 pushdata: None,
-                kind: ByteKind::PushData,
+                kind: ByteKind::Opcode,
             },
         ];
         let optimized_peephole: Bytecode = vec![ByteData {
             pc: 5,
             opcode: Some(Opcode::Xor),
             pushdata: None,
-            kind: ByteKind::PushData,
+            kind: ByteKind::Opcode,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
     }
