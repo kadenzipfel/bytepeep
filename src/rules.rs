@@ -61,6 +61,8 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
             opcode: Some(Opcode::Or),
             ..
         }] => [].to_vec(),
+        // TODO: Include operations resulting in pushing a value
+            // Requires optimize() accepting returned pushdata
 
         _ => peephole[..].to_vec(),
     };
