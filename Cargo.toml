@@ -9,3 +9,4 @@ edition = "2021"
 phf = { version = "0.10", features = ["macros"] }
 strum = "0.24"
 strum_macros = "0.24"
+colored = "2.0.0"

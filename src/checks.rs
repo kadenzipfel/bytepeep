@@ -2,7 +2,7 @@ use crate::types::*;
 use crate::evm::*;
 
 // Check if bytecode contains jumps
-pub fn contains_jumps(bytecode: Bytecode) -> bool {
+pub fn contains_jumps(bytecode: &Bytecode) -> bool {
     bytecode.iter().any(|byte| {
         if byte.kind == ByteKind::Opcode {
             (byte.opcode.unwrap() == Opcode::Jump) ||
@@ -51,7 +51,7 @@ mod tests {
                 kind: ByteKind::Opcode,
             },
         ];
-        assert_eq!(true, contains_jumps(bytecode));
+        assert_eq!(true, contains_jumps(&bytecode));
     }
 
     #[test]
@@ -94,6 +94,6 @@ mod tests {
                 kind: ByteKind::Opcode,
             },
         ];
-        assert_eq!(false, contains_jumps(bytecode));
+        assert_eq!(false, contains_jumps(&bytecode));
     }
 }

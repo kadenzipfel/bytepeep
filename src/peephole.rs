@@ -3,7 +3,7 @@ use crate::evm::*;
 use crate::rules::*;
 use crate::types::*;
 
-pub fn optimize(bytecode: Bytecode) -> Bytecode {
+pub fn optimize(bytecode: &Bytecode) -> Bytecode {
     let mut i: usize = 0;
     let mut optimized_bytecode: Bytecode = vec![];
 
@@ -169,6 +169,6 @@ mod tests {
                 kind: ByteKind::Opcode,
             },
         ];
-        assert_eq!(optimized_bytecode, optimize(bytecode));
+        assert_eq!(optimized_bytecode, optimize(&bytecode));
     }
 }
