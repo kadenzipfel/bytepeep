@@ -29,7 +29,7 @@ fn main() {
     if jump_warning {
         println!(
             "{}",
-            format!("WARNING: Jumps are not supported. Output jumps are likely invalid.").yellow()
+            format!("WARNING: Jumps are not yet supported. Output jumps are likely invalid.").yellow()
         );
     }
 }
