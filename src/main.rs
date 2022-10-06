@@ -1,15 +1,15 @@
-use std::env;
 use colored::Colorize;
+use std::env;
 
 mod assembler;
+mod checks;
 mod disassembler;
 mod evm;
 mod peephole;
 mod rules;
 mod types;
-mod checks;
 
-use crate::{assembler::*, disassembler::*, peephole::*, types::*, checks::contains_jumps};
+use crate::{assembler::*, checks::contains_jumps, disassembler::*, peephole::*, types::*};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -27,6 +27,9 @@ fn main() {
     println!("\n");
 
     if jump_warning {
-        println!("{}", format!("WARNING: Jumps are not supported. Output jumps are likely invalid.").yellow());
+        println!(
+            "{}",
+            format!("WARNING: Jumps are not supported. Output jumps are likely invalid.").yellow()
+        );
     }
 }

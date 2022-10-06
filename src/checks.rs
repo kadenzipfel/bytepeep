@@ -1,12 +1,11 @@
-use crate::types::*;
 use crate::evm::*;
+use crate::types::*;
 
 // Check if bytecode contains jumps
 pub fn contains_jumps(bytecode: &Bytecode) -> bool {
     bytecode.iter().any(|byte| {
         if byte.kind == ByteKind::Opcode {
-            (byte.opcode.unwrap() == Opcode::Jump) ||
-            (byte.opcode.unwrap() == Opcode::Jumpi) 
+            (byte.opcode.unwrap() == Opcode::Jump) || (byte.opcode.unwrap() == Opcode::Jumpi)
         } else {
             false
         }
