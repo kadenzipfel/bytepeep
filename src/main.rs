@@ -6,6 +6,7 @@ mod evm;
 mod peephole;
 mod rules;
 mod types;
+mod checks;
 
 use crate::{assembler::*, disassembler::*, peephole::*, types::*};
 
