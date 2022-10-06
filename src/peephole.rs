@@ -21,8 +21,8 @@ pub fn optimize(bytecode: Bytecode) -> Bytecode {
             continue;
         }
 
-        let mut push_data_size: usize = match_push_n(bytecode[i].opcode.unwrap()) as usize;
-        let increment: usize = push_data_size + 2;
+        let push_data_size: usize = match_push_n(bytecode[i].opcode.unwrap()) as usize;
+        let mut increment: usize = push_data_size;
         let next_op: usize = (push_data_size + i + 1) as usize;
 
         // If current opcode is last, push byte and subsequent pushdata if existent
@@ -54,31 +54,38 @@ pub fn optimize(bytecode: Bytecode) -> Bytecode {
         // Grab two byte peephole
         let bytes: Bytecode = vec![bytecode[i].clone(), bytecode[next_op].clone()];
 
-        // Check peephole for rule violations, correct, and place back in bytecode
-        check_rules(&bytes).into_iter().for_each(|byte| {
-            let byte_pc = ByteData {
-                pc: optimized_bytecode.len() as u32,
-                opcode: byte.opcode,
-                pushdata: byte.pushdata,
-                kind: byte.kind,
-            };
-            optimized_bytecode.push(byte_pc);
+        // Check peephole for rule violations, and place first optimized byte in bytecode
+        let peeped_bytes = check_rules(&bytes);
+        let byte: ByteData = peeped_bytes[0].clone();
+        let byte_pc = ByteData {
+            pc: optimized_bytecode.len() as u32,
+            opcode: byte.opcode,
+            pushdata: byte.pushdata,
+            kind: byte.kind,
+        };
+        optimized_bytecode.push(byte_pc);
 
-            if push_data_size > 0 {
-                for j in 0..push_data_size {
-                    let push_byte = bytecode[i + j + 1].clone();
+        // Place any trailing pushdata back in the bytecode
+        if push_data_size > 0 {
+            for j in 0..push_data_size {
+                let push_byte = bytecode[i + j + 1].clone();
 
-                    optimized_bytecode.push(ByteData {
-                        pc: optimized_bytecode.len() as u32,
-                        opcode: push_byte.opcode,
-                        pushdata: push_byte.pushdata,
-                        kind: push_byte.kind,
-                    })
-                }
-
-                push_data_size = 0;
+                optimized_bytecode.push(ByteData {
+                    pc: optimized_bytecode.len() as u32,
+                    opcode: push_byte.opcode,
+                    pushdata: push_byte.pushdata,
+                    kind: push_byte.kind,
+                })
             }
-        });
+        }
+
+        // If both opcodes remain, go to next opcode
+        if peeped_bytes.len() == 2 {
+            increment += 1;
+        } else {
+            // If any opcodes removed, go to opcode after peephole
+            increment += 2;
+        }
 
         i += increment;
     }
@@ -127,7 +134,7 @@ mod tests {
                 pc: 5,
                 opcode: Some(Opcode::Add),
                 pushdata: None,
-                kind: ByteKind::PushData,
+                kind: ByteKind::Opcode,
             },
         ];
         let optimized_bytecode: Bytecode = vec![
@@ -159,7 +166,7 @@ mod tests {
                 pc: 4,
                 opcode: Some(Opcode::Add),
                 pushdata: None,
-                kind: ByteKind::PushData,
+                kind: ByteKind::Opcode,
             },
         ];
         assert_eq!(optimized_bytecode, optimize(bytecode));
