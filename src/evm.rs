@@ -598,7 +598,7 @@ pub enum Opcode {
     /// Get hash of an account’s code
     Extcodehash,
     /// Non-existent opcode
-    InvalidOpcode
+    InvalidOpcode,
 }
 
 impl Opcode {
@@ -748,7 +748,7 @@ impl Opcode {
             "fd" => Opcode::Revert,
             "fe" => Opcode::Invalid,
             "ff" => Opcode::Selfdestruct,
-            _    => Opcode::InvalidOpcode,
+            _ => Opcode::InvalidOpcode,
         };
         opcode
     }

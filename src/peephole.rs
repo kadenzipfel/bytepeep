@@ -1,7 +1,7 @@
-use crate::types::*;
 use crate::disassembler::*;
-use crate::rules::*;
 use crate::evm::*;
+use crate::rules::*;
+use crate::types::*;
 
 pub fn optimize(bytecode: Bytecode) -> Bytecode {
     let mut i: usize = 0;
@@ -15,7 +15,7 @@ pub fn optimize(bytecode: Bytecode) -> Bytecode {
                 pc: optimized_bytecode.len() as u32,
                 opcode: byte.opcode,
                 pushdata: byte.pushdata,
-                kind: byte.kind
+                kind: byte.kind,
             });
             i += 1;
             continue;
@@ -32,7 +32,7 @@ pub fn optimize(bytecode: Bytecode) -> Bytecode {
                 pc: optimized_bytecode.len() as u32,
                 opcode: byte.opcode,
                 pushdata: byte.pushdata,
-                kind: byte.kind
+                kind: byte.kind,
             });
 
             if push_data_size > 0 {
@@ -43,7 +43,7 @@ pub fn optimize(bytecode: Bytecode) -> Bytecode {
                         pc: optimized_bytecode.len() as u32,
                         opcode: push_byte.opcode,
                         pushdata: push_byte.pushdata,
-                        kind: push_byte.kind
+                        kind: push_byte.kind,
                     })
                 }
             }
@@ -60,7 +60,7 @@ pub fn optimize(bytecode: Bytecode) -> Bytecode {
                 pc: optimized_bytecode.len() as u32,
                 opcode: byte.opcode,
                 pushdata: byte.pushdata,
-                kind: byte.kind
+                kind: byte.kind,
             };
             optimized_bytecode.push(byte_pc);
 
@@ -72,7 +72,7 @@ pub fn optimize(bytecode: Bytecode) -> Bytecode {
                         pc: optimized_bytecode.len() as u32,
                         opcode: push_byte.opcode,
                         pushdata: push_byte.pushdata,
-                        kind: push_byte.kind
+                        kind: push_byte.kind,
                     })
                 }
 
@@ -93,19 +93,74 @@ mod tests {
     #[test]
     fn test_optimize() {
         let bytecode: Bytecode = vec![
-            ByteData { pc: 0, opcode: Some(Opcode::Push1), pushdata: None, kind: ByteKind::Opcode }, 
-            ByteData { pc: 1, opcode: None, pushdata: Some(String::from("80")), kind: ByteKind::PushData }, 
-            ByteData { pc: 2, opcode: Some(Opcode::Push1), pushdata: None, kind: ByteKind::Opcode }, 
-            ByteData { pc: 3, opcode: None, pushdata: Some(String::from("54")), kind: ByteKind::PushData },
-            ByteData { pc: 4, opcode: Some(Opcode::Swap1), pushdata: None, kind: ByteKind::Opcode }, 
-            ByteData { pc: 5, opcode: Some(Opcode::Add), pushdata: None, kind: ByteKind::PushData }
+            ByteData {
+                pc: 0,
+                opcode: Some(Opcode::Push1),
+                pushdata: None,
+                kind: ByteKind::Opcode,
+            },
+            ByteData {
+                pc: 1,
+                opcode: None,
+                pushdata: Some(String::from("80")),
+                kind: ByteKind::PushData,
+            },
+            ByteData {
+                pc: 2,
+                opcode: Some(Opcode::Push1),
+                pushdata: None,
+                kind: ByteKind::Opcode,
+            },
+            ByteData {
+                pc: 3,
+                opcode: None,
+                pushdata: Some(String::from("54")),
+                kind: ByteKind::PushData,
+            },
+            ByteData {
+                pc: 4,
+                opcode: Some(Opcode::Swap1),
+                pushdata: None,
+                kind: ByteKind::Opcode,
+            },
+            ByteData {
+                pc: 5,
+                opcode: Some(Opcode::Add),
+                pushdata: None,
+                kind: ByteKind::PushData,
+            },
         ];
         let optimized_bytecode: Bytecode = vec![
-            ByteData { pc: 0, opcode: Some(Opcode::Push1), pushdata: None, kind: ByteKind::Opcode }, 
-            ByteData { pc: 1, opcode: None, pushdata: Some(String::from("80")), kind: ByteKind::PushData }, 
-            ByteData { pc: 2, opcode: Some(Opcode::Push1), pushdata: None, kind: ByteKind::Opcode }, 
-            ByteData { pc: 3, opcode: None, pushdata: Some(String::from("54")), kind: ByteKind::PushData },
-            ByteData { pc: 4, opcode: Some(Opcode::Add), pushdata: None, kind: ByteKind::PushData }
+            ByteData {
+                pc: 0,
+                opcode: Some(Opcode::Push1),
+                pushdata: None,
+                kind: ByteKind::Opcode,
+            },
+            ByteData {
+                pc: 1,
+                opcode: None,
+                pushdata: Some(String::from("80")),
+                kind: ByteKind::PushData,
+            },
+            ByteData {
+                pc: 2,
+                opcode: Some(Opcode::Push1),
+                pushdata: None,
+                kind: ByteKind::Opcode,
+            },
+            ByteData {
+                pc: 3,
+                opcode: None,
+                pushdata: Some(String::from("54")),
+                kind: ByteKind::PushData,
+            },
+            ByteData {
+                pc: 4,
+                opcode: Some(Opcode::Add),
+                pushdata: None,
+                kind: ByteKind::PushData,
+            },
         ];
         assert_eq!(optimized_bytecode, optimize(bytecode));
     }

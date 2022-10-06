@@ -1,17 +1,17 @@
 use std::env;
 
+mod assembler;
 mod disassembler;
-mod types;
 mod evm;
 mod peephole;
 mod rules;
-mod assembler;
+mod types;
 
-use crate::{disassembler::*, types::*, peephole::*, assembler::*};
+use crate::{assembler::*, disassembler::*, peephole::*, types::*};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    
+
     let bytecode = &args[1];
     println!("\nBytecode: {}", bytecode);
 
