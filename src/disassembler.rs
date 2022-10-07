@@ -69,9 +69,9 @@ pub fn disassemble(byte_string: &String, print: bool) -> Bytecode {
         bytecode.push(ByteData {
             code_index: code_index,
             opcode: Some(opcode),
-            pushdata: Some(String::from(&trimmed_byte_string[i + 2..i + 2 + bytes_to_push])),
+            pushdata: Some(String::from(&trimmed_byte_string[i + 2..i + 2 + bytes_to_push * 2])),
         });
-        i += 2;
+        i += 2 + bytes_to_push * 2;
         code_index += 1 + bytes_to_push;
     }
 
