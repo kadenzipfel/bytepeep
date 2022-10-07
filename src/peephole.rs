@@ -9,10 +9,9 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
 
     while i < bytecode.len() {
         let mut increment = 0;
-        let mut next_op = (i + 1) as usize;
 
         // If current opcode is last, push byte
-        if next_op >= bytecode.len() {
+        if i + 1 >= bytecode.len() {
             let byte = bytecode[i].clone();
             optimized_bytecode.push(ByteData {
                 code_index: code_index,
@@ -24,7 +23,7 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
         }
 
         // Grab two byte peephole
-        let bytes: Bytecode = vec![bytecode[i].clone(), bytecode[next_op].clone()];
+        let bytes: Bytecode = vec![bytecode[i].clone(), bytecode[i + 1].clone()];
 
         // Check peephole for rule violations, and place first optimized byte in bytecode
         let peeped_bytes = check_rules(&bytes);
@@ -35,13 +34,34 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
             pushdata: byte.pushdata,
         };
         optimized_bytecode.push(byte_code_index);
-        code_index += 1;
+        let mut push_data_size: usize = 0;
+        if !peeped_bytes[0].clone().pushdata.is_none() {
+            push_data_size = peeped_bytes[0].clone().pushdata.unwrap().len() / 2;
+        }
+        code_index += 1 + push_data_size;
 
-        // If both opcodes remain, go to next opcode
         if peeped_bytes.len() == 2 {
-            increment += 1;
+            let byte: ByteData = peeped_bytes[1].clone();
+            // If second byte returned different from input, push to optimized bytecode vector
+            if byte.opcode != bytecode[i + 1].clone().opcode {
+                optimized_bytecode.push(ByteData {
+                    code_index: code_index,
+                    opcode: byte.opcode,
+                    pushdata: byte.pushdata,
+                });
+
+                if !peeped_bytes[1].clone().pushdata.is_none() {
+                    push_data_size = peeped_bytes[1].clone().pushdata.unwrap().len() / 2;
+                } else {
+                    push_data_size = 0
+                }
+
+                code_index += 1 + push_data_size;
+                increment += 2;
+            } else {
+                increment += 1;
+            }
         } else {
-            // If any opcodes removed, go to opcode after peephole
             increment += 2;
         }
 
