@@ -58,8 +58,22 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
         // Grab two byte peephole
         let bytes: Bytecode = vec![bytecode[i].clone(), bytecode[next_op].clone()];
 
+        // Grab corresponding pushdata if present
+        let mut peephole_pushdata: Vec<Option<PushData>> = Vec::new();
+        if is_push {
+            peephole_pushdata.push(bytecode[i + 1].clone().pushdata);
+
+            if is_push_op(bytecode[i + 2].opcode.unwrap()) {
+                peephole_pushdata.push(bytecode[i + 3].clone().pushdata);
+            }
+        } else {
+            if is_push_op(bytecode[i + 1].opcode.unwrap()) {
+                peephole_pushdata.push(bytecode[i + 2].clone().pushdata);
+            }
+        }
+
         // Check peephole for rule violations, and place first optimized byte in bytecode
-        let peeped_bytes = check_rules(&bytes);
+        let peeped_bytes = check_rules(&bytes, peephole_pushdata);
         let byte: ByteData = peeped_bytes[0].clone();
         let byte_pc = ByteData {
             pc: pc as u32,
