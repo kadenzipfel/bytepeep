@@ -217,7 +217,7 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
             ByteData {
                 code_index: peephole[0].code_index,
                 opcode: peephole[0].opcode,
-                pushdata: peephole[0].pushdata,
+                pushdata: Some(peephole[0].pushdata.as_ref().unwrap().to_string()),
             },
             ByteData {
                 code_index: peephole[1].code_index + 1,
