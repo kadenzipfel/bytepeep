@@ -254,7 +254,8 @@ mod tests {
             pushdata: None,
             kind: ByteKind::Opcode,
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Swap1, Mul => Mul
         let peephole: Bytecode = vec![
@@ -277,7 +278,8 @@ mod tests {
             pushdata: None,
             kind: ByteKind::Opcode,
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Swap1, Eq => Eq
         let peephole: Bytecode = vec![
@@ -300,7 +302,8 @@ mod tests {
             pushdata: None,
             kind: ByteKind::Opcode,
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Swap1, And => And
         let peephole: Bytecode = vec![
@@ -323,7 +326,8 @@ mod tests {
             pushdata: None,
             kind: ByteKind::Opcode,
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Swap1, Or => Or
         let peephole: Bytecode = vec![
@@ -346,7 +350,8 @@ mod tests {
             pushdata: None,
             kind: ByteKind::Opcode,
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Swap1, Xor => Xor
         let peephole: Bytecode = vec![
@@ -369,7 +374,8 @@ mod tests {
             pushdata: None,
             kind: ByteKind::Opcode,
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
     }
 
     #[test]
@@ -387,7 +393,8 @@ mod tests {
             kind: ByteKind::Opcode
         }];
         let optimized_peephole: Vec<ByteData> = Vec::new();
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Dup1, Or => []
         let peephole = vec![ByteData {
@@ -402,7 +409,8 @@ mod tests {
             kind: ByteKind::Opcode
         }];
         let optimized_peephole: Vec<ByteData> = Vec::new();
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Dup1, Xor => Push1, 00
         let peephole = vec![ByteData {
@@ -427,7 +435,8 @@ mod tests {
             pushdata: Some(String::from("00")),
             kind: ByteKind::PushData
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Dup1, Sub => Push1, 00
         let peephole = vec![ByteData {
@@ -452,7 +461,8 @@ mod tests {
             pushdata: Some(String::from("00")),
             kind: ByteKind::PushData
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Dup1, Eq => Push1, 01
         let peephole = vec![ByteData {
@@ -477,7 +487,8 @@ mod tests {
             pushdata: Some(String::from("01")),
             kind: ByteKind::PushData
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Dup1, Lt => Push1, 00
         let peephole = vec![ByteData {
@@ -502,7 +513,8 @@ mod tests {
             pushdata: Some(String::from("00")),
             kind: ByteKind::PushData
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Dup1, Slt => Push1, 00
         let peephole = vec![ByteData {
@@ -527,7 +539,8 @@ mod tests {
             pushdata: Some(String::from("00")),
             kind: ByteKind::PushData
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Dup1, Gt => Push1, 00
         let peephole = vec![ByteData {
@@ -552,7 +565,8 @@ mod tests {
             pushdata: Some(String::from("00")),
             kind: ByteKind::PushData
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Dup1, Sgt => Push1, 00
         let peephole = vec![ByteData {
@@ -577,7 +591,8 @@ mod tests {
             pushdata: Some(String::from("00")),
             kind: ByteKind::PushData
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
 
         // Dup1, Mod => Push1, 00
         let peephole = vec![ByteData {
@@ -602,6 +617,7 @@ mod tests {
             pushdata: Some(String::from("00")),
             kind: ByteKind::PushData
         }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        let pushdata: Vec<Option<PushData>> = Vec::new();
+        assert_eq!(optimized_peephole, check_rules(&peephole, pushdata));
     }
 }
