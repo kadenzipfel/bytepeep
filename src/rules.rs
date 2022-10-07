@@ -71,11 +71,6 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
             ByteData {
                 code_index: peephole[0].code_index,
                 opcode: Some(Opcode::Push1),
-                pushdata: None,
-            },
-            ByteData {
-                code_index: peephole[1].code_index,
-                opcode: None,
                 pushdata: Some(String::from("00")),
             }
         ].to_vec(),
@@ -89,11 +84,6 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
             ByteData {
                 code_index: peephole[0].code_index,
                 opcode: Some(Opcode::Push1),
-                pushdata: None,
-            },
-            ByteData {
-                code_index: peephole[1].code_index,
-                opcode: None,
                 pushdata: Some(String::from("00")),
             }
         ].to_vec(),
@@ -107,13 +97,8 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
             ByteData {
                 code_index: peephole[0].code_index,
                 opcode: Some(Opcode::Push1),
-                pushdata: None,
-            },
-            ByteData {
-                code_index: peephole[1].code_index,
-                opcode: None,
                 pushdata: Some(String::from("01")),
-            }
+            },
         ].to_vec(),
         [ByteData {
             opcode: Some(Opcode::Dup1),
@@ -125,13 +110,8 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
             ByteData {
                 code_index: peephole[0].code_index,
                 opcode: Some(Opcode::Push1),
-                pushdata: None,
-            },
-            ByteData {
-                code_index: peephole[1].code_index,
-                opcode: None,
                 pushdata: Some(String::from("00")),
-            }
+            },
         ].to_vec(),
         [ByteData {
             opcode: Some(Opcode::Dup1),
@@ -143,13 +123,8 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
             ByteData {
                 code_index: peephole[0].code_index,
                 opcode: Some(Opcode::Push1),
-                pushdata: None,
-            },
-            ByteData {
-                code_index: peephole[1].code_index,
-                opcode: None,
                 pushdata: Some(String::from("00")),
-            }
+            },
         ].to_vec(),
         [ByteData {
             opcode: Some(Opcode::Dup1),
@@ -161,13 +136,8 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
             ByteData {
                 code_index: peephole[0].code_index,
                 opcode: Some(Opcode::Push1),
-                pushdata: None,
-            },
-            ByteData {
-                code_index: peephole[1].code_index,
-                opcode: None,
                 pushdata: Some(String::from("00")),
-            }
+            },
         ].to_vec(),
         [ByteData {
             opcode: Some(Opcode::Dup1),
@@ -179,13 +149,8 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
             ByteData {
                 code_index: peephole[0].code_index,
                 opcode: Some(Opcode::Push1),
-                pushdata: None,
-            },
-            ByteData {
-                code_index: peephole[1].code_index,
-                opcode: None,
                 pushdata: Some(String::from("00")),
-            }
+            },
         ].to_vec(),
         [ByteData {
             opcode: Some(Opcode::Dup1),
@@ -197,13 +162,8 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
             ByteData {
                 code_index: peephole[0].code_index,
                 opcode: Some(Opcode::Push1),
-                pushdata: None,
-            },
-            ByteData {
-                code_index: peephole[1].code_index,
-                opcode: None,
                 pushdata: Some(String::from("00")),
-            }
+            },
         ].to_vec(),
 
         // Duplicate pushes
