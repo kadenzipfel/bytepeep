@@ -4,7 +4,7 @@ pub type PushData = String;
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct ByteData {
-    pub pc: u32,
+    pub code_index: usize,
     pub opcode: Option<Opcode>,
     pub pushdata: Option<PushData>
 }
