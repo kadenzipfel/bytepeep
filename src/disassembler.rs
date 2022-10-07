@@ -54,7 +54,6 @@ pub fn disassemble(byte_string: &String, print: bool) -> Bytecode {
     let mut i = 0;
     let mut pc: u32 = 0;
     let mut bytes_to_push: u32 = 0;
-    let mut bytes_to_skip: usize = 0;
     let trimmed_byte_string: &str;
 
     if byte_string.starts_with(&String::from("0x")) {
