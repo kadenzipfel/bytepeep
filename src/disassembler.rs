@@ -41,11 +41,10 @@ pub fn match_push_n(opcode: Opcode) -> u32 {
 
 fn print_output(bytecode: &Bytecode) {
     for byte in bytecode {
-        if byte.kind == ByteKind::Opcode {
-            print!("\n{} {} ", byte.pc, byte.opcode.unwrap().op_string());
-        }
-        if byte.kind == ByteKind::PushData {
-            print!("{}", byte.pushdata.as_ref().unwrap());
+        if byte.pushdata.is_none() {
+            println!("{} {}", byte.pc, byte.opcode.unwrap().op_string());
+        } else {
+            println!("{} {} {}", byte.pc, byte.opcode.unwrap().op_string(), byte.pushdata.as_ref().unwrap());
         }
     }
 }
