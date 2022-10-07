@@ -51,8 +51,10 @@ fn print_output(bytecode: &Bytecode) {
 }
 
 pub fn disassemble(byte_string: &String, print: bool) -> Bytecode {
+    let mut i = 0;
     let mut pc: u32 = 0;
     let mut bytes_to_push: u32 = 0;
+    let mut bytes_to_skip: usize = 0;
     let trimmed_byte_string: &str;
 
     if byte_string.starts_with(&String::from("0x")) {
@@ -61,33 +63,36 @@ pub fn disassemble(byte_string: &String, print: bool) -> Bytecode {
         trimmed_byte_string = byte_string;
     }
 
-    let bytecode: Bytecode = (0..trimmed_byte_string.len())
-        .step_by(2)
-        .map(|byte| {
-            if bytes_to_push > 0 {
-                bytes_to_push -= 1;
-                pc += 1;
+    let mut bytecode: Bytecode = Vec::new();
 
-                return ByteData {
-                    pc: pc - 1,
-                    opcode: None,
-                    pushdata: Some(String::from(&trimmed_byte_string[byte..byte + 2])),
-                    kind: ByteKind::PushData,
-                };
-            }
+    while i < trimmed_byte_string.len() {
+        if bytes_to_push > 0 {
+            let pushdata = ByteData {
+                pc: pc,
+                opcode: None,
+                pushdata: Some(String::from(&trimmed_byte_string[i..i + bytes_to_push as usize * 2])),
+                kind: ByteKind::PushData,
+            };
 
-            let opcode = Opcode::new(&trimmed_byte_string[byte..byte + 2]);
-            bytes_to_push = match_push_n(opcode);
+            i += 2 * bytes_to_push as usize;
+            pc += bytes_to_push;
+            bytes_to_push = 0;
+            bytecode.push(pushdata);
+            continue
+        }
 
-            pc += 1;
-            ByteData {
-                pc: pc - 1,
-                opcode: Some(opcode),
-                pushdata: None,
-                kind: ByteKind::Opcode,
-            }
-        })
-        .collect();
+        let opcode = Opcode::new(&trimmed_byte_string[i..i + 2]);
+        bytes_to_push = match_push_n(opcode);
+
+        bytecode.push(ByteData {
+            pc: pc,
+            opcode: Some(opcode),
+            pushdata: None,
+            kind: ByteKind::Opcode,
+        });
+        i += 2;
+        pc += 1;
+    }
 
     if print {
         print_output(&bytecode);
@@ -102,28 +107,28 @@ mod tests {
 
     #[test]
     fn test_disassemble() {
-        let byte_string = String::from("0x60806054");
+        let byte_string = String::from("0x6180806054");
         let disassembled_bytes: Bytecode = vec![
             ByteData {
                 pc: 0,
-                opcode: Some(Opcode::Push1),
+                opcode: Some(Opcode::Push2),
                 pushdata: None,
                 kind: ByteKind::Opcode,
             },
             ByteData {
                 pc: 1,
                 opcode: None,
-                pushdata: Some(String::from("80")),
+                pushdata: Some(String::from("8080")),
                 kind: ByteKind::PushData,
             },
             ByteData {
-                pc: 2,
+                pc: 3,
                 opcode: Some(Opcode::Push1),
                 pushdata: None,
                 kind: ByteKind::Opcode,
             },
             ByteData {
-                pc: 3,
+                pc: 4,
                 opcode: None,
                 pushdata: Some(String::from("54")),
                 kind: ByteKind::PushData,
@@ -134,28 +139,28 @@ mod tests {
 
     #[test]
     fn test_disassemble_no_0x() {
-        let byte_string = String::from("60806054");
+        let byte_string = String::from("6180806054");
         let disassembled_bytes: Bytecode = vec![
             ByteData {
                 pc: 0,
-                opcode: Some(Opcode::Push1),
+                opcode: Some(Opcode::Push2),
                 pushdata: None,
                 kind: ByteKind::Opcode,
             },
             ByteData {
                 pc: 1,
                 opcode: None,
-                pushdata: Some(String::from("80")),
+                pushdata: Some(String::from("8080")),
                 kind: ByteKind::PushData,
             },
             ByteData {
-                pc: 2,
+                pc: 3,
                 opcode: Some(Opcode::Push1),
                 pushdata: None,
                 kind: ByteKind::Opcode,
             },
             ByteData {
-                pc: 3,
+                pc: 4,
                 opcode: None,
                 pushdata: Some(String::from("54")),
                 kind: ByteKind::PushData,
