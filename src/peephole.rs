@@ -5,7 +5,7 @@ use crate::utils::*;
 
 pub fn optimize(bytecode: &Bytecode) -> Bytecode {
     let mut i: usize = 0;
-    let mut pc: usize = 0;
+    let mut code_index: usize = 0;
     let mut optimized_bytecode: Bytecode = vec![];
 
     while i < bytecode.len() {
@@ -13,13 +13,12 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
         if bytecode[i].kind != ByteKind::Opcode {
             let byte = bytecode[i].clone();
             optimized_bytecode.push(ByteData {
-                pc: pc as u32,
+                code_index: code_index,
                 opcode: byte.opcode,
                 pushdata: byte.pushdata,
-                kind: byte.kind,
             });
             i += 1;
-            pc += bytecode[i].clone().pushdata.unwrap().len() / 2;
+            code_index += bytecode[i].clone().pushdata.unwrap().len() / 2;
             continue;
         }
 
@@ -35,20 +34,18 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
         if next_op >= bytecode.len() {
             let byte = bytecode[i].clone();
             optimized_bytecode.push(ByteData {
-                pc: pc as u32,
+                code_index: code_index,
                 opcode: byte.opcode,
                 pushdata: byte.pushdata,
-                kind: byte.kind,
             });
 
             if is_push {
                 let push_byte = bytecode[i + 1].clone();
 
                 optimized_bytecode.push(ByteData {
-                    pc: (pc as u32) + 1,
+                    code_index: (code_index) + 1,
                     opcode: push_byte.opcode,
                     pushdata: push_byte.pushdata,
-                    kind: push_byte.kind,
                 })
             }
 
@@ -75,35 +72,34 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
         // Check peephole for rule violations, and place first optimized byte in bytecode
         let peeped_bytes = check_rules(&bytes, peephole_pushdata);
         let byte: ByteData = peeped_bytes[0].clone();
-        let byte_pc = ByteData {
-            pc: pc as u32,
+        let byte_code_index = ByteData {
+            code_index: code_index,
             opcode: byte.opcode,
             pushdata: byte.pushdata,
-            kind: byte.kind,
         };
-        optimized_bytecode.push(byte_pc);
-        pc += 1;
+        optimized_bytecode.push(byte_code_index);
+        code_index += 1;
 
         // If pushdata returned from rule check, append to bytecode
         if peeped_bytes.len() > 1 && peeped_bytes[1].kind == ByteKind::PushData {
             let push_byte = peeped_bytes[1].clone();
             optimized_bytecode.push(ByteData {
-                pc: pc as u32,
+                code_index: code_index,
                 opcode: push_byte.opcode,
                 pushdata: push_byte.pushdata,
                 kind: push_byte.kind
             });
-            pc += peeped_bytes[1].clone().pushdata.unwrap().len() / 2;
+            code_index += peeped_bytes[1].clone().pushdata.unwrap().len() / 2;
         } else if is_push {
             // Place any trailing pushdata back in the bytecode
             let push_byte = bytecode[i + 1].clone();
             optimized_bytecode.push(ByteData {
-                pc: pc as u32,
+                code_index: code_index,
                 opcode: push_byte.opcode,
                 pushdata: push_byte.pushdata,
                 kind: push_byte.kind,
             });
-            pc += bytecode[i + 1].clone().pushdata.unwrap().len() / 2;
+            code_index += bytecode[i + 1].clone().pushdata.unwrap().len() / 2;
         }
 
         // If both opcodes remain, go to next opcode
@@ -128,49 +124,49 @@ mod tests {
     fn test_optimize() {
         let bytecode: Bytecode = vec![
             ByteData {
-                pc: 0,
+                code_index: 0,
                 opcode: Some(Opcode::Push2),
                 pushdata: None,
                 kind: ByteKind::Opcode,
             },
             ByteData {
-                pc: 1,
+                code_index: 1,
                 opcode: None,
                 pushdata: Some(String::from("8080")),
                 kind: ByteKind::PushData,
             },
             ByteData {
-                pc: 3,
+                code_index: 3,
                 opcode: Some(Opcode::Dup1),
                 pushdata: None,
                 kind: ByteKind::Opcode
             },
             ByteData {
-                pc: 4,
+                code_index: 4,
                 opcode: Some(Opcode::Xor),
                 pushdata: None,
                 kind: ByteKind::Opcode
             },
             ByteData {
-                pc: 5,
+                code_index: 5,
                 opcode: Some(Opcode::Push1),
                 pushdata: None,
                 kind: ByteKind::Opcode,
             },
             ByteData {
-                pc: 6,
+                code_index: 6,
                 opcode: None,
                 pushdata: Some(String::from("54")),
                 kind: ByteKind::PushData,
             },
             ByteData {
-                pc: 7,
+                code_index: 7,
                 opcode: Some(Opcode::Swap1),
                 pushdata: None,
                 kind: ByteKind::Opcode,
             },
             ByteData {
-                pc: 8,
+                code_index: 8,
                 opcode: Some(Opcode::Add),
                 pushdata: None,
                 kind: ByteKind::Opcode,
@@ -178,43 +174,43 @@ mod tests {
         ];
         let optimized_bytecode: Bytecode = vec![
             ByteData {
-                pc: 0,
+                code_index: 0,
                 opcode: Some(Opcode::Push2),
                 pushdata: None,
                 kind: ByteKind::Opcode,
             },
             ByteData {
-                pc: 1,
+                code_index: 1,
                 opcode: None,
                 pushdata: Some(String::from("8080")),
                 kind: ByteKind::PushData,
             },
             ByteData {
-                pc: 3,
+                code_index: 3,
                 opcode: Some(Opcode::Push1),
                 pushdata: None,
                 kind: ByteKind::Opcode
             },
             ByteData {
-                pc: 4,
+                code_index: 4,
                 opcode: None,
                 pushdata: Some(String::from("00")),
                 kind: ByteKind::PushData,
             },
             ByteData {
-                pc: 5,
+                code_index: 5,
                 opcode: Some(Opcode::Push1),
                 pushdata: None,
                 kind: ByteKind::Opcode,
             },
             ByteData {
-                pc: 6,
+                code_index: 6,
                 opcode: None,
                 pushdata: Some(String::from("54")),
                 kind: ByteKind::PushData,
             },
             ByteData {
-                pc: 7,
+                code_index: 7,
                 opcode: Some(Opcode::Add),
                 pushdata: None,
                 kind: ByteKind::Opcode,

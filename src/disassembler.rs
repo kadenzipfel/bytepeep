@@ -1,7 +1,7 @@
 use crate::evm::*;
 use crate::types::*;
 
-pub fn match_push_n(opcode: Opcode) -> u32 {
+pub fn match_push_n(opcode: Opcode) -> usize {
     match opcode {
         Opcode::Push1 => 1,
         Opcode::Push2 => 2,
@@ -42,17 +42,16 @@ pub fn match_push_n(opcode: Opcode) -> u32 {
 fn print_output(bytecode: &Bytecode) {
     for byte in bytecode {
         if byte.pushdata.is_none() {
-            println!("{} {}", byte.pc, byte.opcode.unwrap().op_string());
+            println!("{} {}", byte.code_index, byte.opcode.unwrap().op_string());
         } else {
-            println!("{} {} {}", byte.pc, byte.opcode.unwrap().op_string(), byte.pushdata.as_ref().unwrap());
+            println!("{} {} {}", byte.code_index, byte.opcode.unwrap().op_string(), byte.pushdata.as_ref().unwrap());
         }
     }
 }
 
 pub fn disassemble(byte_string: &String, print: bool) -> Bytecode {
     let mut i = 0;
-    let mut pc: u32 = 0;
-    let mut bytes_to_push: u32 = 0;
+    let mut code_index: usize = 0;
     let trimmed_byte_string: &str;
 
     if byte_string.starts_with(&String::from("0x")) {
@@ -64,32 +63,16 @@ pub fn disassemble(byte_string: &String, print: bool) -> Bytecode {
     let mut bytecode: Bytecode = Vec::new();
 
     while i < trimmed_byte_string.len() {
-        if bytes_to_push > 0 {
-            let pushdata = ByteData {
-                pc: pc,
-                opcode: None,
-                pushdata: Some(String::from(&trimmed_byte_string[i..i + bytes_to_push as usize * 2])),
-                kind: ByteKind::PushData,
-            };
-
-            i += 2 * bytes_to_push as usize;
-            pc += bytes_to_push;
-            bytes_to_push = 0;
-            bytecode.push(pushdata);
-            continue
-        }
-
         let opcode = Opcode::new(&trimmed_byte_string[i..i + 2]);
-        bytes_to_push = match_push_n(opcode);
+        let bytes_to_push = match_push_n(opcode);
 
         bytecode.push(ByteData {
-            pc: pc,
+            code_index: code_index,
             opcode: Some(opcode),
-            pushdata: None,
-            kind: ByteKind::Opcode,
+            pushdata: Some(String::from(&trimmed_byte_string[i + 2..i + 2 + bytes_to_push])),
         });
         i += 2;
-        pc += 1;
+        code_index += 1 + bytes_to_push;
     }
 
     if print {
@@ -108,28 +91,14 @@ mod tests {
         let byte_string = String::from("0x6180806054");
         let disassembled_bytes: Bytecode = vec![
             ByteData {
-                pc: 0,
+                code_index: 0,
                 opcode: Some(Opcode::Push2),
-                pushdata: None,
-                kind: ByteKind::Opcode,
-            },
-            ByteData {
-                pc: 1,
-                opcode: None,
                 pushdata: Some(String::from("8080")),
-                kind: ByteKind::PushData,
             },
             ByteData {
-                pc: 3,
+                code_index: 3,
                 opcode: Some(Opcode::Push1),
-                pushdata: None,
-                kind: ByteKind::Opcode,
-            },
-            ByteData {
-                pc: 4,
-                opcode: None,
                 pushdata: Some(String::from("54")),
-                kind: ByteKind::PushData,
             },
         ];
         assert_eq!(disassembled_bytes, disassemble(&byte_string, false));
@@ -140,28 +109,14 @@ mod tests {
         let byte_string = String::from("6180806054");
         let disassembled_bytes: Bytecode = vec![
             ByteData {
-                pc: 0,
+                code_index: 0,
                 opcode: Some(Opcode::Push2),
-                pushdata: None,
-                kind: ByteKind::Opcode,
-            },
-            ByteData {
-                pc: 1,
-                opcode: None,
                 pushdata: Some(String::from("8080")),
-                kind: ByteKind::PushData,
             },
             ByteData {
-                pc: 3,
+                code_index: 3,
                 opcode: Some(Opcode::Push1),
-                pushdata: None,
-                kind: ByteKind::Opcode,
-            },
-            ByteData {
-                pc: 4,
-                opcode: None,
                 pushdata: Some(String::from("54")),
-                kind: ByteKind::PushData,
             },
         ];
         assert_eq!(disassembled_bytes, disassemble(&byte_string, false));
