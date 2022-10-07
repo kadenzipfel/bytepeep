@@ -18,8 +18,8 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
                 pushdata: byte.pushdata,
                 kind: byte.kind,
             });
-            i += 1;
             pc += bytecode[i].clone().pushdata.unwrap().len() / 2;
+            i += 1;
             continue;
         }
 
@@ -160,17 +160,41 @@ mod tests {
             ByteData {
                 pc: 6,
                 opcode: None,
-                pushdata: Some(String::from("54")),
+                pushdata: Some(String::from("00")),
                 kind: ByteKind::PushData,
             },
             ByteData {
                 pc: 7,
-                opcode: Some(Opcode::Swap1),
+                opcode: Some(Opcode::Push1),
                 pushdata: None,
                 kind: ByteKind::Opcode,
             },
             ByteData {
                 pc: 8,
+                opcode: None,
+                pushdata: Some(String::from("00")),
+                kind: ByteKind::PushData,
+            },
+            ByteData {
+                pc: 9,
+                opcode: Some(Opcode::Push1),
+                pushdata: None,
+                kind: ByteKind::Opcode,
+            },
+            ByteData {
+                pc: 10,
+                opcode: None,
+                pushdata: Some(String::from("54")),
+                kind: ByteKind::PushData,
+            },
+            ByteData {
+                pc: 11,
+                opcode: Some(Opcode::Swap1),
+                pushdata: None,
+                kind: ByteKind::Opcode,
+            },
+            ByteData {
+                pc: 12,
                 opcode: Some(Opcode::Add),
                 pushdata: None,
                 kind: ByteKind::Opcode,
@@ -210,11 +234,29 @@ mod tests {
             ByteData {
                 pc: 6,
                 opcode: None,
-                pushdata: Some(String::from("54")),
+                pushdata: Some(String::from("00")),
                 kind: ByteKind::PushData,
             },
             ByteData {
                 pc: 7,
+                opcode: Some(Opcode::Dup1),
+                pushdata: None,
+                kind: ByteKind::Opcode,
+            },
+            ByteData {
+                pc: 8,
+                opcode: Some(Opcode::Push1),
+                pushdata: None,
+                kind: ByteKind::Opcode,
+            },
+            ByteData {
+                pc: 9,
+                opcode: None,
+                pushdata: Some(String::from("54")),
+                kind: ByteKind::PushData,
+            },
+            ByteData {
+                pc: 10,
                 opcode: Some(Opcode::Add),
                 pushdata: None,
                 kind: ByteKind::Opcode,
