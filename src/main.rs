@@ -8,6 +8,7 @@ mod evm;
 mod peephole;
 mod rules;
 mod types;
+mod utils;
 
 use crate::{assembler::*, checks::contains_jumps, disassembler::*, peephole::*, types::*};
 
