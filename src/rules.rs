@@ -402,6 +402,34 @@ pub fn check_rules(peephole: &mut Bytecode) -> Bytecode {
             opcode: Opcode::Not,
             ..
         }] => [].to_vec(),
+
+        // Double negation resulting in boolean
+        [ByteData {
+            opcode: Opcode::Xor,
+            ..
+        }, ByteData {
+            opcode: Opcode::Iszero,
+            ..
+        }] => [
+            ByteData {
+                code_index: peephole[0].code_index,
+                opcode: Opcode::Eq,
+                pushdata: None,
+            }
+        ].to_vec(),
+        [ByteData {
+            opcode: Opcode::Sub,
+            ..
+        }, ByteData {
+            opcode: Opcode::Iszero,
+            ..
+        }] => [
+            ByteData {
+                code_index: peephole[0].code_index,
+                opcode: Opcode::Eq,
+                pushdata: None,
+            }
+        ].to_vec(),
         
         _ => peephole[..].to_vec(),
     };
@@ -761,6 +789,48 @@ mod tests {
             pushdata: None,
         }];
         let optimized_peephole: Bytecode = [].to_vec();
+        assert_eq!(optimized_peephole, check_rules(&mut peephole));
+    }
+
+    #[test]
+    fn test_double_negation() {
+        
+        // Xor, Iszero => Eq
+        let mut peephole = vec![ByteData {
+            code_index: 4,
+            opcode: Opcode::Xor,
+            pushdata: None,
+        }, ByteData {
+            code_index: 5,
+            opcode: Opcode::Iszero,
+            pushdata: None,
+        }];
+        let optimized_peephole = [
+            ByteData {
+                code_index: 4,
+                opcode: Opcode::Eq,
+                pushdata: None,
+            }
+        ].to_vec();
+        assert_eq!(optimized_peephole, check_rules(&mut peephole));
+
+        // Sub, Iszero => Eq
+        let mut peephole = vec![ByteData {
+            code_index: 4,
+            opcode: Opcode::Sub,
+            pushdata: None,
+        }, ByteData {
+            code_index: 5,
+            opcode: Opcode::Iszero,
+            pushdata: None,
+        }];
+        let optimized_peephole = [
+            ByteData {
+                code_index: 4,
+                opcode: Opcode::Eq,
+                pushdata: None,
+            }
+        ].to_vec();
         assert_eq!(optimized_peephole, check_rules(&mut peephole));
     }
 }
