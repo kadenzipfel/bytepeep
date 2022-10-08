@@ -95,16 +95,26 @@ mod tests {
             },
             ByteData {
                 code_index: 5,
+                opcode: Opcode::Push2,
+                pushdata: Some(String::from("8080")),
+            },
+            ByteData {
+                code_index: 8,
+                opcode: Opcode::Push2,
+                pushdata: Some(String::from("8080")),
+            },
+            ByteData {
+                code_index: 11,
                 opcode: Opcode::Push1,
                 pushdata: Some(String::from("54")),
             },
             ByteData {
-                code_index: 7,
+                code_index: 12,
                 opcode: Opcode::Swap1,
                 pushdata: None,
             },
             ByteData {
-                code_index: 8,
+                code_index: 13,
                 opcode: Opcode::Add,
                 pushdata: None,
             },
@@ -122,11 +132,21 @@ mod tests {
             },
             ByteData {
                 code_index: 5,
+                opcode: Opcode::Push2,
+                pushdata: Some(String::from("8080")),
+            },
+            ByteData {
+                code_index: 8,
+                opcode: Opcode::Dup1,
+                pushdata: None,
+            },
+            ByteData {
+                code_index: 9,
                 opcode: Opcode::Push1,
                 pushdata: Some(String::from("54")),
             },
             ByteData {
-                code_index: 7,
+                code_index: 11,
                 opcode: Opcode::Add,
                 pushdata: None,
             },
