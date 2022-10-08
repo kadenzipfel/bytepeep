@@ -42,9 +42,9 @@ pub fn match_push_n(opcode: Opcode) -> usize {
 fn print_output(bytecode: &Bytecode) {
     for byte in bytecode {
         if byte.pushdata.is_none() {
-            println!("{} {}", byte.code_index, byte.opcode.unwrap().op_string());
+            println!("{} {}", byte.code_index, byte.opcode.op_string());
         } else {
-            println!("{} {} {}", byte.code_index, byte.opcode.unwrap().op_string(), byte.pushdata.as_ref().unwrap());
+            println!("{} {} {}", byte.code_index, byte.opcode.op_string(), byte.pushdata.as_ref().unwrap());
         }
     }
 }
@@ -68,7 +68,7 @@ pub fn disassemble(byte_string: &String, print: bool) -> Bytecode {
 
         bytecode.push(ByteData {
             code_index: code_index,
-            opcode: Some(opcode),
+            opcode: opcode,
             pushdata: Some(String::from(&trimmed_byte_string[i + 2..i + 2 + bytes_to_push * 2])),
         });
         i += 2 + bytes_to_push * 2;
@@ -92,12 +92,12 @@ mod tests {
         let disassembled_bytes: Bytecode = vec![
             ByteData {
                 code_index: 0,
-                opcode: Some(Opcode::Push2),
+                opcode: Opcode::Push2,
                 pushdata: Some(String::from("8080")),
             },
             ByteData {
                 code_index: 3,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("54")),
             },
         ];
@@ -110,12 +110,12 @@ mod tests {
         let disassembled_bytes: Bytecode = vec![
             ByteData {
                 code_index: 0,
-                opcode: Some(Opcode::Push2),
+                opcode: Opcode::Push2,
                 pushdata: Some(String::from("8080")),
             },
             ByteData {
                 code_index: 3,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("54")),
             },
         ];

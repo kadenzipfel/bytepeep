@@ -4,174 +4,174 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
     let new_bytecode: Bytecode = match peephole[..] {
         // Redundant swaps on commutative operations
         [ByteData {
-            opcode: Some(Opcode::Swap1),
+            opcode: Opcode::Swap1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Add),
+            opcode: Opcode::Add,
             ..
         }] => peephole[1..].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Swap1),
+            opcode: Opcode::Swap1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Mul),
+            opcode: Opcode::Mul,
             ..
         }] => peephole[1..].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Swap1),
+            opcode: Opcode::Swap1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Eq),
+            opcode: Opcode::Eq,
             ..
         }] => peephole[1..].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Swap1),
+            opcode: Opcode::Swap1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::And),
+            opcode: Opcode::And,
             ..
         }] => peephole[1..].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Swap1),
+            opcode: Opcode::Swap1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Or),
+            opcode: Opcode::Or,
             ..
         }] => peephole[1..].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Swap1),
+            opcode: Opcode::Swap1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Xor),
+            opcode: Opcode::Xor,
             ..
         }] => peephole[1..].to_vec(),
 
         // Operations involving an expression and itself
         [ByteData {
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::And),
+            opcode: Opcode::And,
             ..
         }] => [].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Or),
+            opcode: Opcode::Or,
             ..
         }] => [].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Xor),
+            opcode: Opcode::Xor,
             ..
         }] => [
             ByteData {
                 code_index: peephole[0].code_index,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("00")),
             }
         ].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Sub),
+            opcode: Opcode::Sub,
             ..
         }] => [
             ByteData {
                 code_index: peephole[0].code_index,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("00")),
             }
         ].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Eq),
+            opcode: Opcode::Eq,
             ..
         }] => [
             ByteData {
                 code_index: peephole[0].code_index,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("01")),
             },
         ].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Lt),
+            opcode: Opcode::Lt,
             ..
         }] => [
             ByteData {
                 code_index: peephole[0].code_index,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("00")),
             },
         ].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Slt),
+            opcode: Opcode::Slt,
             ..
         }] => [
             ByteData {
                 code_index: peephole[0].code_index,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("00")),
             },
         ].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Gt),
+            opcode: Opcode::Gt,
             ..
         }] => [
             ByteData {
                 code_index: peephole[0].code_index,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("00")),
             },
         ].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Sgt),
+            opcode: Opcode::Sgt,
             ..
         }] => [
             ByteData {
                 code_index: peephole[0].code_index,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("00")),
             },
         ].to_vec(),
         [ByteData {
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Mod),
+            opcode: Opcode::Mod,
             ..
         }] => [
             ByteData {
                 code_index: peephole[0].code_index,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("00")),
             },
         ].to_vec(),
 
         // Duplicate pushes
         [ByteData {
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             ..
         }, ByteData {
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             ..
         }] if peephole[0].pushdata.as_ref().unwrap() == peephole[1].pushdata.as_ref().unwrap() => [
             ByteData {
@@ -181,7 +181,7 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
             },
             ByteData {
                 code_index: peephole[1].code_index + 1,
-                opcode: Some(Opcode::Dup1),
+                opcode: Opcode::Dup1,
                 pushdata: None,
             },
         ].to_vec(),
@@ -200,18 +200,18 @@ mod tests {
         let peephole: Bytecode = vec![
             ByteData {
                 code_index: 4,
-                opcode: Some(Opcode::Swap1),
+                opcode: Opcode::Swap1,
                 pushdata: None,
             },
             ByteData {
                 code_index: 5,
-                opcode: Some(Opcode::Add),
+                opcode: Opcode::Add,
                 pushdata: None,
             },
         ];
         let optimized_peephole: Bytecode = vec![ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Add),
+            opcode: Opcode::Add,
             pushdata: None,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -220,18 +220,18 @@ mod tests {
         let peephole: Bytecode = vec![
             ByteData {
                 code_index: 4,
-                opcode: Some(Opcode::Swap1),
+                opcode: Opcode::Swap1,
                 pushdata: None,
             },
             ByteData {
                 code_index: 5,
-                opcode: Some(Opcode::Mul),
+                opcode: Opcode::Mul,
                 pushdata: None,
             },
         ];
         let optimized_peephole: Bytecode = vec![ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Mul),
+            opcode: Opcode::Mul,
             pushdata: None,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -240,18 +240,18 @@ mod tests {
         let peephole: Bytecode = vec![
             ByteData {
                 code_index: 4,
-                opcode: Some(Opcode::Swap1),
+                opcode: Opcode::Swap1,
                 pushdata: None,
             },
             ByteData {
                 code_index: 5,
-                opcode: Some(Opcode::Eq),
+                opcode: Opcode::Eq,
                 pushdata: None,
             },
         ];
         let optimized_peephole: Bytecode = vec![ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Eq),
+            opcode: Opcode::Eq,
             pushdata: None,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -260,18 +260,18 @@ mod tests {
         let peephole: Bytecode = vec![
             ByteData {
                 code_index: 4,
-                opcode: Some(Opcode::Swap1),
+                opcode: Opcode::Swap1,
                 pushdata: None,
             },
             ByteData {
                 code_index: 5,
-                opcode: Some(Opcode::And),
+                opcode: Opcode::And,
                 pushdata: None,
             },
         ];
         let optimized_peephole: Bytecode = vec![ByteData {
             code_index: 5,
-            opcode: Some(Opcode::And),
+            opcode: Opcode::And,
             pushdata: None,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -280,18 +280,18 @@ mod tests {
         let peephole: Bytecode = vec![
             ByteData {
                 code_index: 4,
-                opcode: Some(Opcode::Swap1),
+                opcode: Opcode::Swap1,
                 pushdata: None,
             },
             ByteData {
                 code_index: 5,
-                opcode: Some(Opcode::Or),
+                opcode: Opcode::Or,
                 pushdata: None,
             },
         ];
         let optimized_peephole: Bytecode = vec![ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Or),
+            opcode: Opcode::Or,
             pushdata: None,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -300,18 +300,18 @@ mod tests {
         let peephole: Bytecode = vec![
             ByteData {
                 code_index: 4,
-                opcode: Some(Opcode::Swap1),
+                opcode: Opcode::Swap1,
                 pushdata: None,
             },
             ByteData {
                 code_index: 5,
-                opcode: Some(Opcode::Xor),
+                opcode: Opcode::Xor,
                 pushdata: None,
             },
         ];
         let optimized_peephole: Bytecode = vec![ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Xor),
+            opcode: Opcode::Xor,
             pushdata: None,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -322,11 +322,11 @@ mod tests {
         // Dup1, And => []
         let peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             pushdata: None,
         }, ByteData {
             code_index: 5,
-            opcode: Some(Opcode::And),
+            opcode: Opcode::And,
             pushdata: None,
         }];
         let optimized_peephole: Vec<ByteData> = Vec::new();
@@ -335,11 +335,11 @@ mod tests {
         // Dup1, Or => []
         let peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             pushdata: None,
         }, ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Or),
+            opcode: Opcode::Or,
             pushdata: None,
         }];
         let optimized_peephole: Vec<ByteData> = Vec::new();
@@ -348,16 +348,16 @@ mod tests {
         // Dup1, Xor => Push1, 00
         let peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             pushdata: None,
         }, ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Xor),
+            opcode: Opcode::Xor,
             pushdata: None,
         }];
         let optimized_peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             pushdata: Some(String::from("00")),
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -365,16 +365,16 @@ mod tests {
         // Dup1, Sub => Push1, 00
         let peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             pushdata: None,
         }, ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Sub),
+            opcode: Opcode::Sub,
             pushdata: None,
         }];
         let optimized_peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             pushdata: Some(String::from("00")),
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -382,16 +382,16 @@ mod tests {
         // Dup1, Eq => Push1, 01
         let peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             pushdata: None,
         }, ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Eq),
+            opcode: Opcode::Eq,
             pushdata: None,
         }];
         let optimized_peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             pushdata: Some(String::from("01")),
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -399,16 +399,16 @@ mod tests {
         // Dup1, Lt => Push1, 00
         let peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             pushdata: None,
         }, ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Lt),
+            opcode: Opcode::Lt,
             pushdata: None,
         }];
         let optimized_peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             pushdata: Some(String::from("00")),
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -416,16 +416,16 @@ mod tests {
         // Dup1, Slt => Push1, 00
         let peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             pushdata: None,
         }, ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Slt),
+            opcode: Opcode::Slt,
             pushdata: None,
         }];
         let optimized_peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             pushdata: Some(String::from("00")),
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -433,16 +433,16 @@ mod tests {
         // Dup1, Gt => Push1, 00
         let peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             pushdata: None,
         }, ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Gt),
+            opcode: Opcode::Gt,
             pushdata: None,
         }];
         let optimized_peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             pushdata: Some(String::from("00")),
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -450,16 +450,16 @@ mod tests {
         // Dup1, Sgt => Push1, 00
         let peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             pushdata: None,
         }, ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Sgt),
+            opcode: Opcode::Sgt,
             pushdata: None,
         }];
         let optimized_peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             pushdata: Some(String::from("00")),
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -467,16 +467,16 @@ mod tests {
         // Dup1, Mod => Push1, 00
         let peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             pushdata: None,
         }, ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Mod),
+            opcode: Opcode::Mod,
             pushdata: None,
         }];
         let optimized_peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             pushdata: Some(String::from("00")),
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));
@@ -487,20 +487,20 @@ mod tests {
         // Push1, X, Push1, X => Push1, X, Dup1
         let peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             pushdata: Some(String::from("00")),
         }, ByteData {
             code_index: 5,
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             pushdata: Some(String::from("00")),
         }];
         let optimized_peephole = vec![ByteData {
             code_index: 4,
-            opcode: Some(Opcode::Push1),
+            opcode: Opcode::Push1,
             pushdata: Some(String::from("00")),
         }, ByteData {
             code_index: 6,
-            opcode: Some(Opcode::Dup1),
+            opcode: Opcode::Dup1,
             pushdata: None,
         }];
         assert_eq!(optimized_peephole, check_rules(&peephole));

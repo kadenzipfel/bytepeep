@@ -80,54 +80,54 @@ mod tests {
         let bytecode: Bytecode = vec![
             ByteData {
                 code_index: 0,
-                opcode: Some(Opcode::Push2),
+                opcode: Opcode::Push2,
                 pushdata: Some(String::from("8080")),
             },
             ByteData {
                 code_index: 3,
-                opcode: Some(Opcode::Dup1),
+                opcode: Opcode::Dup1,
                 pushdata: None,
             },
             ByteData {
                 code_index: 4,
-                opcode: Some(Opcode::Xor),
+                opcode: Opcode::Xor,
                 pushdata: None,
             },
             ByteData {
                 code_index: 5,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("54")),
             },
             ByteData {
                 code_index: 7,
-                opcode: Some(Opcode::Swap1),
+                opcode: Opcode::Swap1,
                 pushdata: None,
             },
             ByteData {
                 code_index: 8,
-                opcode: Some(Opcode::Add),
+                opcode: Opcode::Add,
                 pushdata: None,
             },
         ];
         let optimized_bytecode: Bytecode = vec![
             ByteData {
                 code_index: 0,
-                opcode: Some(Opcode::Push2),
+                opcode: Opcode::Push2,
                 pushdata: Some(String::from("8080")),
             },
             ByteData {
                 code_index: 3,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("00")),
             },
             ByteData {
                 code_index: 5,
-                opcode: Some(Opcode::Push1),
+                opcode: Opcode::Push1,
                 pushdata: Some(String::from("54")),
             },
             ByteData {
                 code_index: 7,
-                opcode: Some(Opcode::Add),
+                opcode: Opcode::Add,
                 pushdata: None,
             },
         ];
