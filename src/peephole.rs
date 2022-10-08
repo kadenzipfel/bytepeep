@@ -23,10 +23,10 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
         }
 
         // Grab two byte peephole
-        let bytes: Bytecode = vec![bytecode[i].clone(), bytecode[i + 1].clone()];
+        let mut bytes: Bytecode = vec![bytecode[i].clone(), bytecode[i + 1].clone()];
 
         // Check peephole for rule violations, and place first optimized byte in bytecode
-        let peeped_bytes = check_rules(&bytes);
+        let peeped_bytes = check_rules(&mut bytes);
         let byte: ByteData = peeped_bytes[0].clone();
         let byte_code_index = ByteData {
             code_index: code_index,

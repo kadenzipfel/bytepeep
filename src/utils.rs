@@ -3,15 +3,13 @@ use crate::evm::*;
 pub fn min_pushdata_len(string: &String) -> (usize, String) {
     let mut len = string.len() / 2;
     let mut start = 0;
-    for mut i in 0..string.len() {
-        if string[i..i + 2] == String::from("00") {
+    for i in 0..len {
+        if string[i * 2..i * 2 + 2] == String::from("00") {
             len -= 1;
             start += 2;
         } else {
             break;
         }
-
-        i += 2;
     };
     (len, string[start..].to_string())
 }
