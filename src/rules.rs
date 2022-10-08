@@ -9,7 +9,7 @@ pub fn check_rules(peephole: &mut Bytecode) -> Bytecode {
         for j in 0..32 {
             if byte.opcode == PUSH_OPS[j] {
                 let (min_len, min_string) = min_pushdata_len(&peephole[i].clone().pushdata.as_ref().unwrap());
-                if min_len < j {
+                if min_len - 1 < j {
                     byte = ByteData {
                         code_index: byte.code_index,
                         opcode: PUSH_OPS[min_len - 1],
@@ -723,8 +723,8 @@ mod tests {
     fn test_reduced_push_size() {
         let mut peephole = vec![ByteData {
             code_index: 4,
-            opcode: Opcode::Push4,
-            pushdata: Some(String::from("30380020")),
+            opcode: Opcode::Push2,
+            pushdata: Some(String::from("0080")),
         }, ByteData {
             code_index: 5,
             opcode: Opcode::Push18,
@@ -732,8 +732,8 @@ mod tests {
         }];
         let optimized_peephole = vec![ByteData {
             code_index: 4,
-            opcode: Opcode::Push4,
-            pushdata: Some(String::from("30380020")),
+            opcode: Opcode::Push1,
+            pushdata: Some(String::from("80")),
         }, ByteData {
             code_index: 5,
             opcode: Opcode::Push8,
