@@ -1,5 +1,4 @@
-use crate::evm::*;
-use crate::types::*;
+use crate::{evm::*, types::*};
 
 // Check if bytecode contains jumps
 pub fn contains_jumps(bytecode: &Bytecode) -> bool {

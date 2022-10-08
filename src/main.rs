@@ -1,6 +1,8 @@
 use colored::Colorize;
 use std::{env, iter};
 
+use crate::{assembler::*, checks::contains_jumps, disassembler::*, peephole::*, types::*};
+
 mod assembler;
 mod checks;
 mod disassembler;
@@ -9,8 +11,6 @@ mod peephole;
 mod rules;
 mod types;
 mod utils;
-
-use crate::{assembler::*, checks::contains_jumps, disassembler::*, peephole::*, types::*};
 
 fn main() {
     let args: Vec<String> = env::args().collect();

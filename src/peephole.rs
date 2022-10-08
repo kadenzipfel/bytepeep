@@ -1,6 +1,4 @@
-use crate::evm::*;
-use crate::rules::*;
-use crate::types::*;
+use crate::{evm::*, rules::*, types::*};
 
 pub fn optimize(bytecode: &Bytecode) -> Bytecode {
     let mut i: usize = 0;

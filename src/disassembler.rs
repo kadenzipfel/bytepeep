@@ -1,6 +1,4 @@
-use crate::evm::*;
-use crate::types::*;
-use crate::utils::*;
+use crate::{evm::*, types::*, utils::*};
 
 pub fn output(bytecode: &Bytecode) -> String {
     let mut output: String = String::from("");

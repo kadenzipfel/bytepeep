@@ -1,5 +1,4 @@
-use crate::evm::*;
-use crate::types::*;
+use crate::{evm::*, types::*};
 
 pub fn assemble(bytecode: &Bytecode) -> String {
     let mut byte_string: String = String::from("0x");
