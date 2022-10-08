@@ -1,6 +1,22 @@
-use crate::{evm::*, types::*};
+use crate::{evm::*, types::*, utils::*};
 
 pub fn check_rules(peephole: &Bytecode) -> Bytecode {
+    // Individual op checks
+    // for i in 0..2 {
+    //     let mut byte: ByteData;
+    //     // Reducable push size
+    //     for j in 0..32 {
+    //         if peephole[i].opcode == PUSH_OPS[i] && min_string_len(&peephole[i].pushdata.unwrap()) < j {
+
+    //         }
+
+    //         j += 1;
+    //     }
+
+    //     i += 1;
+    // }
+
+    // Peephole (2 op) checks
     let new_bytecode: Bytecode = match peephole[..] {
         // Redundant swaps on commutative operations
         [ByteData {
