@@ -173,6 +173,192 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
         }, ByteData {
             opcode: Opcode::Push1,
             ..
+        }] | [ByteData {
+            opcode: Opcode::Push2,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push2,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push3,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push3,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push4,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push4,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push5,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push5,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push6,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push6,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push7,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push7,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push8,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push8,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push9,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push9,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push10,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push10,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push11,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push11,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push12,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push12,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push13,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push13,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push14,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push14,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push15,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push15,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push16,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push16,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push17,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push17,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push18,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push18,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push19,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push19,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push20,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push20,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push21,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push21,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push22,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push22,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push23,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push23,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push24,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push24,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push25,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push25,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push26,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push26,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push27,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push27,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push28,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push28,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push29,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push29,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push30,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push30,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push31,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push31,
+            ..
+        }] | [ByteData {
+            opcode: Opcode::Push32,
+            ..
+        }, ByteData {
+            opcode: Opcode::Push32,
+            ..
         }] if peephole[0].pushdata.as_ref().unwrap() == peephole[1].pushdata.as_ref().unwrap() => [
             ByteData {
                 code_index: peephole[0].code_index,
@@ -185,6 +371,7 @@ pub fn check_rules(peephole: &Bytecode) -> Bytecode {
                 pushdata: None,
             },
         ].to_vec(),
+        
         _ => peephole[..].to_vec(),
     };
     new_bytecode
@@ -498,6 +685,27 @@ mod tests {
             code_index: 4,
             opcode: Opcode::Push1,
             pushdata: Some(String::from("00")),
+        }, ByteData {
+            code_index: 6,
+            opcode: Opcode::Dup1,
+            pushdata: None,
+        }];
+        assert_eq!(optimized_peephole, check_rules(&peephole));
+
+        // Push2, X, Push2, X => Push2, X, Dup1
+        let peephole = vec![ByteData {
+            code_index: 4,
+            opcode: Opcode::Push2,
+            pushdata: Some(String::from("0000")),
+        }, ByteData {
+            code_index: 5,
+            opcode: Opcode::Push2,
+            pushdata: Some(String::from("0000")),
+        }];
+        let optimized_peephole = vec![ByteData {
+            code_index: 4,
+            opcode: Opcode::Push2,
+            pushdata: Some(String::from("0000")),
         }, ByteData {
             code_index: 6,
             opcode: Opcode::Dup1,
