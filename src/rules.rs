@@ -401,8 +401,6 @@ pub fn check_rules(peephole: &mut Bytecode) -> Bytecode {
 
 #[cfg(test)]
 mod tests {
-    use crate::peephole::optimize;
-
     use super::*;
 
     #[test]
