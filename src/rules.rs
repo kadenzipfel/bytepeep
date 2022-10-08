@@ -671,46 +671,27 @@ mod tests {
 
     #[test]
     fn test_duplicate_pushes() {
-        // Push1, X, Push1, X => Push1, X, Dup1
-        let peephole = vec![ByteData {
-            code_index: 4,
-            opcode: Opcode::Push1,
-            pushdata: Some(String::from("00")),
-        }, ByteData {
-            code_index: 5,
-            opcode: Opcode::Push1,
-            pushdata: Some(String::from("00")),
-        }];
-        let optimized_peephole = vec![ByteData {
-            code_index: 4,
-            opcode: Opcode::Push1,
-            pushdata: Some(String::from("00")),
-        }, ByteData {
-            code_index: 6,
-            opcode: Opcode::Dup1,
-            pushdata: None,
-        }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
-
-        // Push2, X, Push2, X => Push2, X, Dup1
-        let peephole = vec![ByteData {
-            code_index: 4,
-            opcode: Opcode::Push2,
-            pushdata: Some(String::from("0000")),
-        }, ByteData {
-            code_index: 5,
-            opcode: Opcode::Push2,
-            pushdata: Some(String::from("0000")),
-        }];
-        let optimized_peephole = vec![ByteData {
-            code_index: 4,
-            opcode: Opcode::Push2,
-            pushdata: Some(String::from("0000")),
-        }, ByteData {
-            code_index: 6,
-            opcode: Opcode::Dup1,
-            pushdata: None,
-        }];
-        assert_eq!(optimized_peephole, check_rules(&peephole));
+        for i in 0..32 {
+            // PushN, X, PushN, X => PushN, X, Dup1
+            let peephole = vec![ByteData {
+                code_index: 4,
+                opcode: PUSH_OPS[i],
+                pushdata: Some(std::iter::repeat("10").take(i + 1).collect::<String>()),
+            }, ByteData {
+                code_index: 5,
+                opcode: PUSH_OPS[i],
+                pushdata: Some(std::iter::repeat("10").take(i + 1).collect::<String>()),
+            }];
+            let optimized_peephole = vec![ByteData {
+                code_index: 4,
+                opcode: PUSH_OPS[i],
+                pushdata: Some(std::iter::repeat("10").take(i + 1).collect::<String>()),
+            }, ByteData {
+                code_index: 6,
+                opcode: Opcode::Dup1,
+                pushdata: None,
+            }];
+            assert_eq!(optimized_peephole, check_rules(&peephole));
+        }
     }
 }

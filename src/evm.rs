@@ -303,6 +303,41 @@ pub static OPCODES_MAP: phf::Map<&'static str, Opcode> = phf_map! {
     "selfdestruct" => Opcode::Selfdestruct
 };
 
+pub const PUSH_OPS: [Opcode; 32] = [
+    Opcode::Push1,
+    Opcode::Push2,
+    Opcode::Push3,
+    Opcode::Push4,
+    Opcode::Push5,
+    Opcode::Push6,
+    Opcode::Push7,
+    Opcode::Push8,
+    Opcode::Push9,
+    Opcode::Push10,
+    Opcode::Push11,
+    Opcode::Push12,
+    Opcode::Push13,
+    Opcode::Push14,
+    Opcode::Push15,
+    Opcode::Push16,
+    Opcode::Push17,
+    Opcode::Push18,
+    Opcode::Push19,
+    Opcode::Push20,
+    Opcode::Push21,
+    Opcode::Push22,
+    Opcode::Push23,
+    Opcode::Push24,
+    Opcode::Push25,
+    Opcode::Push26,
+    Opcode::Push27,
+    Opcode::Push28,
+    Opcode::Push29,
+    Opcode::Push30,
+    Opcode::Push31,
+    Opcode::Push32,
+];
+
 /// EVM Opcodes
 /// References <https://evm.codes>
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, EnumString)]
