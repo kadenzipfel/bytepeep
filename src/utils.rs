@@ -1,17 +1,19 @@
 use crate::evm::*;
 
-pub fn min_pushdata_len(string: &String) -> usize {
+pub fn min_pushdata_len(string: &String) -> (usize, String) {
     let mut len = string.len() / 2;
+    let mut start = 0;
     for mut i in 0..string.len() {
         if string[i..i + 2] == String::from("00") {
             len -= 1;
+            start += 2;
         } else {
             break;
         }
 
         i += 2;
     };
-    len
+    (len, string[start..].to_string())
 }
 
 pub fn is_push_op(opcode: Opcode) -> bool {
@@ -96,9 +98,9 @@ mod tests {
     #[test]
     fn test_min_pushdata_len() {
         let push_string = String::from("10101010");
-        assert_eq!(4, min_pushdata_len(&push_string));
+        assert_eq!((4, String::from("10101010")), min_pushdata_len(&push_string));
 
         let push_string = String::from("00100010");
-        assert_eq!(3, min_pushdata_len(&push_string));
+        assert_eq!((3, String::from("100010")), min_pushdata_len(&push_string));
     }
 }
