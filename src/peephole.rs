@@ -78,7 +78,6 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
     optimized_bytecode
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
 
