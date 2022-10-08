@@ -2,17 +2,19 @@ use crate::evm::*;
 use crate::types::*;
 use crate::utils::*;
 
-fn print_output(bytecode: &Bytecode) {
+pub fn output(bytecode: &Bytecode) -> String {
+    let mut output: String = String::from("");
     for byte in bytecode {
         if byte.pushdata.is_none() {
-            println!("{} {}", byte.code_index, byte.opcode.op_string());
+            output.push_str(format!("\n{} {}", byte.code_index, byte.opcode.op_string()).as_str());
         } else {
-            println!("{} {} {}", byte.code_index, byte.opcode.op_string(), byte.pushdata.as_ref().unwrap());
+            output.push_str(format!("\n{} {} {}", byte.code_index, byte.opcode.op_string(), byte.pushdata.as_ref().unwrap()).as_str());
         }
     }
+    output
 }
 
-pub fn disassemble(byte_string: &String, print: bool) -> Bytecode {
+pub fn disassemble(byte_string: &String) -> Bytecode {
     let mut i = 0;
     let mut code_index: usize = 0;
     let trimmed_byte_string: &str;
@@ -36,10 +38,6 @@ pub fn disassemble(byte_string: &String, print: bool) -> Bytecode {
         });
         i += 2 + bytes_to_push * 2;
         code_index += 1 + bytes_to_push;
-    }
-
-    if print {
-        print_output(&bytecode);
     }
 
     bytecode
