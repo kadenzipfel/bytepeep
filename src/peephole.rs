@@ -27,6 +27,13 @@ pub fn optimize(bytecode: &Bytecode) -> Bytecode {
 
         // Check peephole for rule violations, and place first optimized byte in bytecode
         let peeped_bytes = check_rules(&mut bytes);
+
+        // Handle both bytes removed
+        if peeped_bytes.len() == 0 {
+            i += 2;
+            continue;
+        }
+
         let byte: ByteData = peeped_bytes[0].clone();
         let byte_code_index = ByteData {
             code_index: code_index,
@@ -95,26 +102,36 @@ mod tests {
             },
             ByteData {
                 code_index: 5,
+                opcode: Opcode::Not,
+                pushdata: None,
+            },
+            ByteData {
+                code_index: 6,
+                opcode: Opcode::Not,
+                pushdata: None,
+            },
+            ByteData {
+                code_index: 7,
                 opcode: Opcode::Push2,
                 pushdata: Some(String::from("8080")),
             },
             ByteData {
-                code_index: 8,
+                code_index: 10,
                 opcode: Opcode::Push2,
                 pushdata: Some(String::from("8080")),
             },
             ByteData {
-                code_index: 11,
+                code_index: 13,
                 opcode: Opcode::Push1,
                 pushdata: Some(String::from("54")),
             },
             ByteData {
-                code_index: 12,
+                code_index: 14,
                 opcode: Opcode::Swap1,
                 pushdata: None,
             },
             ByteData {
-                code_index: 13,
+                code_index: 15,
                 opcode: Opcode::Add,
                 pushdata: None,
             },
