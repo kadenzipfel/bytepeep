@@ -393,6 +393,15 @@ pub fn check_rules(peephole: &mut Bytecode) -> Bytecode {
                 pushdata: None,
             },
         ].to_vec(),
+
+        // Logical instruction combinations
+        [ByteData {
+            opcode: Opcode::Not,
+            ..
+        }, ByteData {
+            opcode: Opcode::Not,
+            ..
+        }] => [].to_vec(),
         
         _ => peephole[..].to_vec(),
     };
@@ -737,6 +746,21 @@ mod tests {
             opcode: Opcode::Push8,
             pushdata: Some(String::from("2030000000004040")),
         }];
+        assert_eq!(optimized_peephole, check_rules(&mut peephole));
+    }
+
+    #[test]
+    fn test_logical_instruction_combinations() {
+        let mut peephole = vec![ByteData {
+            code_index: 4,
+            opcode: Opcode::Not,
+            pushdata: None,
+        }, ByteData {
+            code_index: 5,
+            opcode: Opcode::Not,
+            pushdata: None,
+        }];
+        let optimized_peephole: Bytecode = [].to_vec();
         assert_eq!(optimized_peephole, check_rules(&mut peephole));
     }
 }
