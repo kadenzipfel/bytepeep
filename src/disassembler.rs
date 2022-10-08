@@ -62,7 +62,7 @@ mod tests {
                 pushdata: Some(String::from("54")),
             },
         ];
-        assert_eq!(disassembled_bytes, disassemble(&byte_string, false));
+        assert_eq!(disassembled_bytes, disassemble(&byte_string));
     }
 
     #[test]
@@ -80,6 +80,6 @@ mod tests {
                 pushdata: Some(String::from("54")),
             },
         ];
-        assert_eq!(disassembled_bytes, disassemble(&byte_string, false));
+        assert_eq!(disassembled_bytes, disassemble(&byte_string));
     }
 }

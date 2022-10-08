@@ -18,13 +18,13 @@ fn main() {
     let bytecode = &args[1];
     println!("\nBytecode: {}", bytecode);
 
-    let bytes: Bytecode = disassemble(bytecode, true);
+    let bytes: Bytecode = disassemble(bytecode);
     let jump_warning: bool = contains_jumps(&bytes);
     let optimized_bytes: Bytecode = optimize(&bytes);
     let optimized_bytecode = assemble(&optimized_bytes);
 
     println!("\n\nOptimized bytecode: {}", optimized_bytecode);
-    disassemble(&optimized_bytecode, true);
+    disassemble(&optimized_bytecode);
     println!("\n");
 
     if jump_warning {
