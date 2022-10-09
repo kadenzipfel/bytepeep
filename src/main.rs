@@ -1,5 +1,6 @@
 use colored::Colorize;
-use std::{env, iter};
+use std::{iter};
+use clap::Parser;
 
 use crate::{assembler::*, checks::contains_jumps, disassembler::*, peephole::*, types::*};
 
@@ -12,10 +13,15 @@ mod rules;
 mod types;
 mod utils;
 
-fn main() {
-    let args: Vec<String> = env::args().collect();
+#[derive(Parser)]
+pub struct Cli {
+    bytecode: String
+}
 
-    let bytecode = &args[1];
+fn main() {
+    let args: Cli = Cli::parse();
+
+    let bytecode = &args.bytecode;
     println!("Bytecode: {}", bytecode);
 
     let bytes: Bytecode = disassemble(bytecode);

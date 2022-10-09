@@ -9,3 +9,4 @@ edition = "2021"
 strum = "0.24"
 strum_macros = "0.24"
 colored = "2.0.0"
+clap = { version = "4.0", features = ["derive"] }
