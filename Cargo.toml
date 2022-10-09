@@ -1,7 +1,12 @@
 [package]
 name = "bytepeep"
 version = "0.1.0"
-edition = "2021"
+authors = ["https://github.com/kadenzipfel"]
+license = "Apache-2.0"
+description = "Bytecode peephole optimizer"
+readme = "README.md"
+homepage = "https://github.com/kadenzipfel/bytepeep"
+repository = "https://github.com/kadenzipfel/bytepeep"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
