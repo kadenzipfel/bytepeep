@@ -1,6 +1,7 @@
 [package]
 name = "bytepeep"
 version = "0.1.0"
+edition = "2021"
 authors = ["https://github.com/kadenzipfel"]
 license = "Apache-2.0"
 description = "Bytecode peephole optimizer"
