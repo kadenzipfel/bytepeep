@@ -23,6 +23,8 @@ This is **not intended as a replacement for solidity's built-in optimizers**. Ra
 
 ### Todo
 
+Contributions welcome!
+
 - [ ] Handle multi-variable rules, (stack/memory dependent)
 - [ ] Reassign jumps
 - [ ] Handle different inputs
