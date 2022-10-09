@@ -1,5 +1,6 @@
 use crate::{evm::*, types::*, utils::*};
 
+// Output disassembled bytecode string
 pub fn output(bytecode: &Bytecode) -> String {
     let mut output: String = String::from("");
     for byte in bytecode {
@@ -12,11 +13,13 @@ pub fn output(bytecode: &Bytecode) -> String {
     output
 }
 
+// Disassemble bytecode
 pub fn disassemble(byte_string: &String) -> Bytecode {
     let mut i = 0;
     let mut code_index: usize = 0;
     let trimmed_byte_string: &str;
 
+    // Remove leading 0x if present
     if byte_string.starts_with(&String::from("0x")) {
         trimmed_byte_string = &byte_string[2..];
     } else {
@@ -25,6 +28,7 @@ pub fn disassemble(byte_string: &String) -> Bytecode {
 
     let mut bytecode: Bytecode = Vec::new();
 
+    // Grab each opcode and corresponding pushdata if present
     while i < trimmed_byte_string.len() {
         let opcode = Opcode::new(&trimmed_byte_string[i..i + 2]);
         let bytes_to_push = match_push_n(opcode);

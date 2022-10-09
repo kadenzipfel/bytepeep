@@ -1,5 +1,6 @@
 use crate::{evm::*, rules::*, types::*};
 
+// Optimize bytecode by creating peepholes and running rule checks
 pub fn optimize(bytecode: &Bytecode) -> Bytecode {
     let mut i: usize = 0;
     let mut code_index: usize = 0;

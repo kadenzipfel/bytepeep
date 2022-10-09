@@ -1,5 +1,6 @@
 use crate::{evm::*, types::*, utils::*};
 
+// Check rules against provided peephole
 pub fn check_rules(peephole: &mut Bytecode) -> Bytecode {
     // Individual op checks
     for i in 0..2 {

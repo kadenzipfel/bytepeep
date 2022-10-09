@@ -33,6 +33,7 @@ fn main() {
     let output_optimized_bytes = output(&optimized_bytes);
     let optimized_bytecode = assemble(&optimized_bytes);
 
+    // Pretty print unoptimized and optimized bytecode
     let left_pad = output_bytes.lines().map(|l| l.len()).max().unwrap_or(0) + 2;
     println!("\n{:width$} {}", "Unoptimized", "Optimized", width = left_pad);
     for (output_bytes, output_optimized_bytes) in output_bytes.lines().zip(output_optimized_bytes.lines().chain(iter::repeat(""))) {
@@ -42,6 +43,7 @@ fn main() {
     println!("\nOptimized bytecode: {}", optimized_bytecode);
     disassemble(&optimized_bytecode);
 
+    // Warn if jumps present
     if jump_warning {
         println!(
             "{}",

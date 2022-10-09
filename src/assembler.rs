@@ -1,5 +1,6 @@
 use crate::{evm::*, types::*};
 
+// Assemble disassembled bytecode
 pub fn assemble(bytecode: &Bytecode) -> String {
     let mut byte_string: String = String::from("0x");
     for byte in bytecode {

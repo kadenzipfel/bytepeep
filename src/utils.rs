@@ -1,5 +1,6 @@
 use crate::evm::*;
 
+// Find minimum viable length for pushdata
 pub fn min_pushdata_len(string: &String) -> (usize, String) {
     let mut len = string.len() / 2;
     let mut start = 0;
@@ -14,6 +15,7 @@ pub fn min_pushdata_len(string: &String) -> (usize, String) {
     (len, string[start..].to_string())
 }
 
+// Get push size from PushN opcode
 pub fn match_push_n(opcode: Opcode) -> usize {
     match opcode {
         Opcode::Push1 => 1,
