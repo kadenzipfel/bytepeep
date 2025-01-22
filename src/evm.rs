@@ -1,7 +1,8 @@
 use std::fmt;
 use strum_macros::EnumString;
 
-pub const PUSH_OPS: [Opcode; 32] = [
+pub const PUSH_OPS: [Opcode; 33] = [
+    Opcode::Push0,
     Opcode::Push1,
     Opcode::Push2,
     Opcode::Push3,
@@ -170,6 +171,8 @@ pub enum Opcode {
     Gas,
     /// Marks a valid destination for jumps
     Jumpdest,
+     /// Places 0 on top of the stack
+    Push0,
     /// Places 1 byte item on top of the stack
     Push1,
     /// Places 2 byte item on top of the stack
@@ -416,6 +419,7 @@ impl Opcode {
             "5c" => Opcode::Tload,
             "5d" => Opcode::Tstore,
             "5e" => Opcode::Mcopy,
+            "5f" => Opcode::Push0,
             "60" => Opcode::Push1,
             "61" => Opcode::Push2,
             "62" => Opcode::Push3,
@@ -572,6 +576,7 @@ impl Opcode {
             Opcode::Tload => "5c",
             Opcode::Tstore => "5d",
             Opcode::Mcopy => "5e",
+            Opcode::Push0 => "5f",
             Opcode::Push1 => "60",
             Opcode::Push2 => "61",
             Opcode::Push3 => "62",
@@ -724,6 +729,7 @@ impl Opcode {
             Opcode::Msize => "Msize",
             Opcode::Gas => "Gas",
             Opcode::Jumpdest => "Jumpdest",
+            Opcode::Push0 => "Push0",
             Opcode::Push1 => "Push1",
             Opcode::Push2 => "Push2",
             Opcode::Push3 => "Push3",
