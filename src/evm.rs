@@ -336,6 +336,8 @@ pub enum Opcode {
     Extcodehash,
     /// Get the blob base-fee of the current block
     Blobbasefee,
+    /// Gey the versioned hash of transaction blobs
+    Blobhash,
     /// Efficiently copy memory areas with less overhead
     Mcopy,
     /// Reads from transient storage
@@ -403,6 +405,7 @@ impl Opcode {
             "46" => Opcode::Chainid,
             "47" => Opcode::Selfbalance,
             "48" => Opcode::Basefee,
+            "49" => Opcode::Blobhash,
             "4a" => Opcode::Blobbasefee,
             "50" => Opcode::Pop,
             "51" => Opcode::Mload,
@@ -560,6 +563,7 @@ impl Opcode {
             Opcode::Chainid => "46",
             Opcode::Selfbalance => "47",
             Opcode::Basefee => "48",
+            Opcode::Blobhash => "4a",
             Opcode::Blobbasefee => "4a",
             Opcode::Pop => "50",
             Opcode::Mload => "51",
@@ -810,6 +814,7 @@ impl Opcode {
             Opcode::Invalid => "Invalid",
             Opcode::Selfdestruct => "Selfdestruct",
             Opcode::Blobbasefee => "Blobbasefee",
+            Opcode::Blobhash => "Blobhash",
             Opcode::Mcopy => "Mcopy",
             Opcode::Tload => "Tload",
             Opcode::Tstore => "Tstore",
