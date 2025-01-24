@@ -563,7 +563,7 @@ impl Opcode {
             Opcode::Chainid => "46",
             Opcode::Selfbalance => "47",
             Opcode::Basefee => "48",
-            Opcode::Blobhash => "4a",
+            Opcode::Blobhash => "49",
             Opcode::Blobbasefee => "4a",
             Opcode::Pop => "50",
             Opcode::Mload => "51",
