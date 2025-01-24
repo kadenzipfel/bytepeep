@@ -1,7 +1,8 @@
 use std::fmt;
 use strum_macros::EnumString;
 
-pub const PUSH_OPS: [Opcode; 32] = [
+pub const PUSH_OPS: [Opcode; 33] = [
+    Opcode::Push0,
     Opcode::Push1,
     Opcode::Push2,
     Opcode::Push3,
@@ -170,6 +171,8 @@ pub enum Opcode {
     Gas,
     /// Marks a valid destination for jumps
     Jumpdest,
+     /// Places 0 on top of the stack
+    Push0,
     /// Places 1 byte item on top of the stack
     Push1,
     /// Places 2 byte item on top of the stack
@@ -331,6 +334,16 @@ pub enum Opcode {
     Selfdestruct,
     /// Get hash of an account’s code
     Extcodehash,
+    /// Get the blob base-fee of the current block
+    Blobbasefee,
+    /// Gey the versioned hash of transaction blobs
+    Blobhash,
+    /// Efficiently copy memory areas with less overhead
+    Mcopy,
+    /// Reads from transient storage
+    Tload,
+    /// Writes to transient storage
+    Tstore,
     /// Non-existent opcode
     InvalidOpcode,
 }
@@ -392,6 +405,8 @@ impl Opcode {
             "46" => Opcode::Chainid,
             "47" => Opcode::Selfbalance,
             "48" => Opcode::Basefee,
+            "49" => Opcode::Blobhash,
+            "4a" => Opcode::Blobbasefee,
             "50" => Opcode::Pop,
             "51" => Opcode::Mload,
             "52" => Opcode::Mstore,
@@ -404,6 +419,10 @@ impl Opcode {
             "59" => Opcode::Msize,
             "5a" => Opcode::Gas,
             "5b" => Opcode::Jumpdest,
+            "5c" => Opcode::Tload,
+            "5d" => Opcode::Tstore,
+            "5e" => Opcode::Mcopy,
+            "5f" => Opcode::Push0,
             "60" => Opcode::Push1,
             "61" => Opcode::Push2,
             "62" => Opcode::Push3,
@@ -544,6 +563,8 @@ impl Opcode {
             Opcode::Chainid => "46",
             Opcode::Selfbalance => "47",
             Opcode::Basefee => "48",
+            Opcode::Blobhash => "49",
+            Opcode::Blobbasefee => "4a",
             Opcode::Pop => "50",
             Opcode::Mload => "51",
             Opcode::Mstore => "52",
@@ -556,6 +577,10 @@ impl Opcode {
             Opcode::Msize => "59",
             Opcode::Gas => "5a",
             Opcode::Jumpdest => "5b",
+            Opcode::Tload => "5c",
+            Opcode::Tstore => "5d",
+            Opcode::Mcopy => "5e",
+            Opcode::Push0 => "5f",
             Opcode::Push1 => "60",
             Opcode::Push2 => "61",
             Opcode::Push3 => "62",
@@ -708,6 +733,7 @@ impl Opcode {
             Opcode::Msize => "Msize",
             Opcode::Gas => "Gas",
             Opcode::Jumpdest => "Jumpdest",
+            Opcode::Push0 => "Push0",
             Opcode::Push1 => "Push1",
             Opcode::Push2 => "Push2",
             Opcode::Push3 => "Push3",
@@ -787,6 +813,11 @@ impl Opcode {
             Opcode::Revert => "Revert",
             Opcode::Invalid => "Invalid",
             Opcode::Selfdestruct => "Selfdestruct",
+            Opcode::Blobbasefee => "Blobbasefee",
+            Opcode::Blobhash => "Blobhash",
+            Opcode::Mcopy => "Mcopy",
+            Opcode::Tload => "Tload",
+            Opcode::Tstore => "Tstore",
             Opcode::InvalidOpcode => "InvalidOpcode",
         };
         opcode_str.to_string()
