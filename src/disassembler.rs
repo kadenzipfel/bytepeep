@@ -32,14 +32,24 @@ pub fn disassemble(byte_string: &String) -> Bytecode {
     while i < trimmed_byte_string.len() {
         let opcode = Opcode::new(&trimmed_byte_string[i..i + 2]);
         let bytes_to_push = match_push_n(opcode);
-
-        bytecode.push(ByteData {
-            code_index: code_index,
-            opcode: opcode,
-            pushdata: Some(String::from(&trimmed_byte_string[i + 2..i + 2 + bytes_to_push * 2])),
-        });
-        i += 2 + bytes_to_push * 2;
-        code_index += 1 + bytes_to_push;
+        // No pushdata for push0
+        if opcode == Opcode::Push0 {
+            bytecode.push(ByteData {
+                code_index: code_index,
+                opcode: opcode,
+                pushdata: None,
+            });
+            i += 2;
+            code_index += 1;
+        } else {
+            bytecode.push(ByteData {
+                code_index: code_index,
+                opcode: opcode,
+                pushdata: Some(String::from(&trimmed_byte_string[i + 2..i + 2 + bytes_to_push * 2])),
+            });
+            i += 2 + bytes_to_push * 2;
+            code_index += 1 + bytes_to_push;
+        }
     }
 
     bytecode
@@ -80,6 +90,25 @@ mod tests {
                 code_index: 3,
                 opcode: Opcode::Push1,
                 pushdata: Some(String::from("54")),
+            },
+        ];
+        assert_eq!(disassembled_bytes, disassemble(&byte_string));
+    }
+
+    #[test]
+    fn test_disassemble_push0() {
+        // Test PUSH0 followed by PUSH1 01 to verify both regular push and Push0 work
+        let byte_string = String::from("5f6001");  // PUSH0 PUSH1 01
+        let disassembled_bytes: Bytecode = vec![
+            ByteData {
+                code_index: 0,
+                opcode: Opcode::Push0,
+                pushdata: None,  // PUSH0 has no immediate data in bytecode
+            },
+            ByteData {
+                code_index: 1,
+                opcode: Opcode::Push1,
+                pushdata: Some(String::from("01")),
             },
         ];
         assert_eq!(disassembled_bytes, disassemble(&byte_string));
