@@ -34,4 +34,22 @@ mod tests {
         let byte_string = String::from("0x60806054");
         assert_eq!(byte_string, assemble(&bytecode));
     }
+
+    #[test]
+    fn test_assemble_push0() {
+        let bytecode: Bytecode = vec![
+            ByteData {
+                code_index: 0,
+                opcode: Opcode::Push0,
+                pushdata: None,
+            },
+            ByteData {
+                code_index: 1,
+                opcode: Opcode::Push1,
+                pushdata: Some(String::from("01")),
+            },
+        ];
+        let byte_string = String::from("0x5f6001");
+        assert_eq!(byte_string, assemble(&bytecode));
+    }
 }

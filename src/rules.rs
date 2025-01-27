@@ -5,20 +5,25 @@ pub fn check_rules(peephole: &mut Bytecode) -> Bytecode {
     // Individual op checks
     for i in 0..2 {
         let mut byte: ByteData = peephole[i].clone();
-
-        // Reducable push size
-        for j in 0..32 {
-            if byte.opcode == PUSH_OPS[j] {
-                let (min_len, min_string) = min_pushdata_len(&peephole[i].clone().pushdata.as_ref().unwrap());
-                if min_len - 1 < j {
-                    byte = ByteData {
-                        code_index: byte.code_index,
-                        opcode: PUSH_OPS[min_len - 1],
-                        pushdata: Some(min_string),
+            // Reducable push size
+            for j in 1..32 {
+                if byte.opcode == PUSH_OPS[j] {
+                    let (min_len, min_string) = min_pushdata_len(&peephole[i].clone().pushdata.as_ref().unwrap());
+                    if min_len == 0 {
+                        byte = ByteData {
+                            code_index: byte.code_index,
+                            opcode: Opcode::Push0,
+                            pushdata: None,
+                        };
+                    } else if min_len - 1 < j {
+                        byte = ByteData {
+                            code_index: byte.code_index,
+                            opcode: PUSH_OPS[min_len],
+                            pushdata: Some(min_string),
+                        };
                     }
                 }
             }
-        }
 
         peephole[i] = byte;
     }
@@ -189,7 +194,7 @@ pub fn check_rules(peephole: &mut Bytecode) -> Bytecode {
             },
         ].to_vec(),
 
-        // Duplicate pushes
+        // Duplicate pushes 
         [ByteData {
             opcode: Opcode::Push1,
             ..
@@ -389,7 +394,7 @@ pub fn check_rules(peephole: &mut Bytecode) -> Bytecode {
                 pushdata: Some(peephole[0].pushdata.as_ref().unwrap().to_string()),
             },
             ByteData {
-                code_index: peephole[1].code_index + 1,
+                code_index: peephole[1].code_index,
                 opcode: Opcode::Dup1,
                 pushdata: None,
             },
@@ -731,28 +736,50 @@ mod tests {
 
     #[test]
     fn test_duplicate_pushes() {
-        for i in 0..32 {
+        // Test Push1 through Push32 (skip Push0 since it has no pushdata)
+        for i in 1..32 {
             // PushN, X, PushN, X => PushN, X, Dup1
             let mut peephole = vec![ByteData {
                 code_index: 4,
                 opcode: PUSH_OPS[i],
-                pushdata: Some(std::iter::repeat("10").take(i + 1).collect::<String>()),
+                pushdata: Some(std::iter::repeat("10").take(i).collect::<String>()),
             }, ByteData {
                 code_index: 5,
                 opcode: PUSH_OPS[i],
-                pushdata: Some(std::iter::repeat("10").take(i + 1).collect::<String>()),
+                pushdata: Some(std::iter::repeat("10").take(i).collect::<String>()),
             }];
             let optimized_peephole = vec![ByteData {
                 code_index: 4,
                 opcode: PUSH_OPS[i],
-                pushdata: Some(std::iter::repeat("10").take(i + 1).collect::<String>()),
+                pushdata: Some(std::iter::repeat("10").take(i).collect::<String>()),
             }, ByteData {
-                code_index: 6,
+                code_index: 5,
                 opcode: Opcode::Dup1,
                 pushdata: None,
             }];
             assert_eq!(optimized_peephole, check_rules(&mut peephole));
         }
+
+        // Push0 is more efficient than dup1 so don't optimize
+        let mut peephole = vec![ByteData {
+            code_index: 4,
+            opcode: Opcode::Push0,
+            pushdata: None,
+        }, ByteData {
+            code_index: 5,
+            opcode: Opcode::Push0,
+            pushdata: None,
+        }];
+        let optimized_peephole = vec![ByteData {
+            code_index: 4,
+            opcode: Opcode::Push0,
+            pushdata: None,
+        }, ByteData {
+            code_index: 5,
+            opcode: Opcode::Push0,
+            pushdata: None,
+        }];
+        assert_eq!(optimized_peephole, check_rules(&mut peephole));
     }
 
     #[test]

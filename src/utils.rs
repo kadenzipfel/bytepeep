@@ -18,6 +18,7 @@ pub fn min_pushdata_len(string: &String) -> (usize, String) {
 // Get push size from PushN opcode
 pub fn match_push_n(opcode: Opcode) -> usize {
     match opcode {
+        Opcode::Push0 => 0,
         Opcode::Push1 => 1,
         Opcode::Push2 => 2,
         Opcode::Push3 => 3,
