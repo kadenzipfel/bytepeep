@@ -103,7 +103,7 @@ mod tests {
             ByteData {
                 code_index: 0,
                 opcode: Opcode::Push0,
-                pushdata: None,  // PUSH0 has no immediate data in bytecode
+                pushdata: None,
             },
             ByteData {
                 code_index: 1,

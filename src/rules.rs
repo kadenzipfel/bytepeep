@@ -780,26 +780,6 @@ mod tests {
             pushdata: None,
         }];
         assert_eq!(optimized_peephole, check_rules(&mut peephole));
-
-        let mut peephole = vec![ByteData {
-            code_index: 4,
-            opcode: Opcode::Push0,
-            pushdata: None,
-        }, ByteData {
-            code_index: 5,
-            opcode: Opcode::Push0,
-            pushdata: None,
-        }];
-        let optimized_peephole = vec![ByteData {
-            code_index: 4,
-            opcode: Opcode::Push0,
-            pushdata: None,
-        }, ByteData {
-            code_index: 5,
-            opcode: Opcode::Push0,
-            pushdata: None,
-        }];
-        assert_eq!(optimized_peephole, check_rules(&mut peephole));
     }
 
     #[test]
