@@ -29,7 +29,7 @@ Contributions welcome!
 - [ ] Reassign jumps
 - [ ] Handle different inputs
   - [ ] Mnemonics
-  - [ ] Huff
+  - [x] Huff
 - [ ] Return tips along with optimized bytecode
 
 ### Disclaimer
