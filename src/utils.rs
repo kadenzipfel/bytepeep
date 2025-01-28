@@ -1,4 +1,41 @@
 use crate::evm::*;
+use std::{path::Path, process::Command};
+
+#[derive(Debug, Clone, strum::EnumString)]
+#[strum(ascii_case_insensitive)]
+pub enum Source {
+    Raw,
+    Huff,
+}
+
+pub fn compile_huff(path: &str) -> Result<String, String> {
+    if !Path::new(path).exists() {
+        return Err(format!("File not found: {}", path));
+    }
+
+    let output = Command::new("huffc")
+        .args(["-b", path])
+        .output()
+        .map_err(|e| format!("Failed to compile the huff code: {}", e))?;
+
+    if !output.status.success() {
+        return Err(format!("huffc failed: {}", 
+            String::from_utf8_lossy(&output.stderr)));
+    }
+
+    let output_str = String::from_utf8_lossy(&output.stdout);
+
+    // Extract the bytecode from last line of the o/p
+    let bytecode = output_str
+        .lines()
+        .last()
+        .ok_or_else(|| "No output".to_string())?
+        .trim()
+        .trim_end_matches('%')
+        .to_string();
+
+    Ok(bytecode)
+}
 
 // Find minimum viable length for pushdata
 pub fn min_pushdata_len(string: &String) -> (usize, String) {
