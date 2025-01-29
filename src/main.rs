@@ -1,8 +1,15 @@
 use colored::Colorize;
-use std::{iter};
+use std::iter;
 use clap::Parser;
 
-use crate::{assembler::*, checks::contains_jumps, disassembler::*, peephole::*, types::*};
+use crate::{
+    assembler::*,
+    checks::contains_jumps,
+    disassembler::*,
+    peephole::*,
+    types::*,
+    utils::{Source, compile_huff},
+};
 
 mod assembler;
 mod checks;
@@ -15,16 +22,28 @@ mod utils;
 
 #[derive(Parser)]
 pub struct Cli {
-    bytecode: String
+    bytecode: String,
+
+    #[clap(long, help = "Source type (raw/huff)", default_value = "raw")]
+    source: Source,
 }
 
 fn main() {
     let args: Cli = Cli::parse();
 
-    let bytecode = &args.bytecode;
+    let bytecode = match args.source {
+        Source::Raw => args.bytecode.clone(),
+        Source::Huff => match compile_huff(&args.bytecode) {
+            Ok(code) => code,
+            Err(e) => {
+                eprintln!("Error: {}", e.red());
+                std::process::exit(1);
+            }
+        }
+    };
     println!("Bytecode: {}", bytecode);
 
-    let bytes: Bytecode = disassemble(bytecode);
+    let bytes: Bytecode = disassemble(&bytecode);
     let output_bytes = output(&bytes);
 
     let jump_warning: bool = contains_jumps(&bytes);
